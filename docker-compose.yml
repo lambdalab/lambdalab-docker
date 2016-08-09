@@ -34,7 +34,7 @@ services:
     volumes:
       - ./data/elasticsearch:/lambda_home/data/elasticsearch
       - ./configs:/lambda_home/configs
-      - ./logs/elasticsearch://usr/share/elasticsearch/logs
+      - ./logs/elasticsearch:/lambda_home/data/logs
   jenkins:
     image: 'lambdalab/jenkins:0.1'
     environment:
