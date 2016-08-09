@@ -1,0 +1,116 @@
+version: '2'
+services:
+  tools:
+    image: 'lambdalab/tools:0.1'
+    container_name: 'tools'
+    volumes:
+      - /lambda_home/
+  db:
+    image: 'mongo:3.2'
+    network_mode: host
+    entrypoint:
+      - mongod
+      - --dbpath
+      - /data/db
+      - --logpath
+      - /logs/mongo.log
+      - --httpinterface
+      - --rest
+      - --setParameter
+      - failIndexKeyTooLong=false
+    volumes:
+#      for osx/windows you can't mount data volume from host:  https://iainhunter.wordpress.com/2016/01/12/avoiding-pitfalls-running-mongo-3-2-in-docker-on-osx/
+#      so when running from mac following line should be used
+#      - db_volume:/data/db
+      - ./data/mongodb/db:/data/db
+      - ./logs/mongodb:/logs
+
+  redis: # TODO mount redis disk volume
+    image: 'redis:3.2'
+    network_mode: host
+  elasticsearch:
+    image: 'lambdalab/elasticsearch:2.3.4'
+    user: 'elasticsearch'
+    network_mode: host
+    volumes:
+      - ./data/elasticsearch:/lambda_home/data/elasticsearch
+      - ./configs:/lambda_home/configs
+      - ./logs/elasticsearch://usr/share/elasticsearch/logs
+  jenkins:
+    image: 'lambdalab/jenkins:0.1'
+    environment:
+      - TOOLS_MOUNT=--volumes-from=tools
+      - HOST_JOBS=${PWD}/data/jenkins_home/jobs
+    volumes:
+      - ./data/jenkins_home/jobs:/var/jenkins_home/jobs
+      - /var/run/docker.sock:/var/run/docker.sock
+    volumes_from:
+      - tools
+    network_mode: host
+  dataservice:
+    image: 'lambdalab/dataservice:0.1'
+    network_mode: host
+    depends_on:
+      - db
+    volumes:
+      - ./data/projects:/lambda_home/data/projects
+      - ./logs:/lambda_home/logs
+      - ./configs:/lambda_home/configs
+  projectservice:
+    image: 'lambdalab/projectservice:0.1'
+    network_mode: host
+    depends_on:
+      - db
+    volumes:
+      - ./data/projects:/lambda_home/data/projects
+      - ./logs:/lambda_home/logs
+      - ./configs:/lambda_home/configs
+  liaceservice:
+    image: 'lambdalab/liaceservice:0.1'
+    network_mode: host
+    depends_on:
+      - db
+      - elasticsearch
+    volumes:
+      - ./configs:/lambda_home/configs
+      - ./logs:/lambda_home/logs
+  metadataservice:
+    image: 'lambdalab/metadataservice:0.1'
+    network_mode: host
+    depends_on:
+      - db
+    volumes:
+      - ./configs:/lambda_home/configs
+      - ./logs:/lambda_home/logs
+  pygments:
+    image: 'lambdalab/pygments:0.1'
+    network_mode: host
+    depends_on:
+      - db
+    volumes:
+      - ./configs:/lambda_home/configs
+      - ./logs:/lambda_home/logs
+  codatlas:
+    image: 'lambdalab/codatlas:0.1'
+    network_mode: host
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - ./configs:/lambda_home/configs
+      - ./logs:/lambda_home/logs
+volumes:
+  artifacts_m2:
+    external: false
+  artifacts_ivy2:
+    external: false
+  artifacts_npm:
+    external: false
+  artifacts_gradle:
+    external: false
+  artifacts_ant:
+    external: false
+  artifacts_sbt:
+    external: false
+  db_volume: # used for mac and windows only
+    external: false
