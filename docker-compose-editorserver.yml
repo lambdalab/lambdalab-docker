@@ -53,17 +53,5 @@ services:
       - ./logs:/lambda_home/logs
       - ./data/editor_projects:/lambda_home/data/editor_projects # same as jenkins
 volumes:
-  artifacts_m2:
-    external: false
-  artifacts_ivy2:
-    external: false
-  artifacts_npm:
-    external: false
-  artifacts_gradle:
-    external: false
-  artifacts_ant:
-    external: false
-  artifacts_sbt:
-    external: false
   db_volume: # used for mac and windows only
     external: false

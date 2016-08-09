@@ -30,7 +30,6 @@ services:
     network_mode: host
   elasticsearch:
     image: 'lambdalab/elasticsearch:2.3.4'
-    user: 'elasticsearch'
     network_mode: host
     volumes:
       - ./data/elasticsearch:/lambda_home/data/elasticsearch
@@ -100,17 +99,5 @@ services:
       - ./configs:/lambda_home/configs
       - ./logs:/lambda_home/logs
 volumes:
-  artifacts_m2:
-    external: false
-  artifacts_ivy2:
-    external: false
-  artifacts_npm:
-    external: false
-  artifacts_gradle:
-    external: false
-  artifacts_ant:
-    external: false
-  artifacts_sbt:
-    external: false
   db_volume: # used for mac and windows only
     external: false
