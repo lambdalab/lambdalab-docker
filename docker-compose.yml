@@ -65,7 +65,7 @@ services:
       - ./logs:/lambda_home/logs
       - ./configs:/lambda_home/configs
   liaceservice:
-    image: 'lambdalab/liaceservice:0.1'
+    image: 'lambdalab/liaceservice:0.1.1'
     network_mode: host
     depends_on:
       - db
