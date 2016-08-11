@@ -1,0 +1,300 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Process Management in Production &mdash; Lambdalab-docs 1.0.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Lambdalab-docs 1.0.0 documentation" href="index.html"/>
+        <link rel="next" title="Process Management in Production with Docker" href="process_management_docker.html"/>
+        <link rel="prev" title="Codatlas New User Guide" href="user_guide.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index_enterprise.html" class="icon icon-home"> Lambdalab-docs
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="on_prem_install.html">Codatlas Private Cloud Version Quick Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_guide.html">Codatlas New User Guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Process Management in Production</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#command-line-client">command line client</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#start-stop-restart-process">start/stop/restart process</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#attach-to-a-processs-foreground">attach to a process’s foreground</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tail-f-a-process"><code class="docutils literal"><span class="pre">tail</span> <span class="pre">-f</span></code> a process</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#web-control-panel">Web control panel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#commands">Commands</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pstree">pstree</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#caveat">Caveat</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="process_management_docker.html">Process Management in Production with Docker</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index_enterprise.html">Lambdalab-docs</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index_enterprise.html">Docs</a> &raquo;</li>
+      
+    <li>Process Management in Production</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/process_management.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="process-management-in-production">
+<h1>Process Management in Production<a class="headerlink" href="#process-management-in-production" title="Permalink to this headline">¶</a></h1>
+<p>We use <a class="reference external" href="http://supervisord.org/">supervisor</a> as process control system. Instead of
+<code class="docutils literal"><span class="pre">start/stop/restart</span></code> manually, we delegate these tasks to supervisor.
+Now release operation is done either via supervisor command line or web
+control panel.</p>
+<div class="section" id="command-line-client">
+<h2>command line client<a class="headerlink" href="#command-line-client" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">supervisorctl</span></code> is a command line util to manager process. Common
+operation are as follows: ### list process</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">supervisorctl</span> <span class="n">status</span>
+</pre></div>
+</div>
+<div class="section" id="start-stop-restart-process">
+<h3>start/stop/restart process<a class="headerlink" href="#start-stop-restart-process" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span>supervisorctl start/stop/restart $process_name
+</pre></div>
+</div>
+</div>
+<div class="section" id="attach-to-a-processs-foreground">
+<h3>attach to a process’s foreground<a class="headerlink" href="#attach-to-a-processs-foreground" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span>supervisorctl fg $process_name
+</pre></div>
+</div>
+</div>
+<div class="section" id="tail-f-a-process">
+<h3><code class="docutils literal"><span class="pre">tail</span> <span class="pre">-f</span></code> a process<a class="headerlink" href="#tail-f-a-process" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span>supervisorctl tail -f $process_name
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="web-control-panel">
+<h2>Web control panel<a class="headerlink" href="#web-control-panel" title="Permalink to this headline">¶</a></h2>
+<p>Supervisord has a web control panel to do simple control, the port number is 9001.</p>
+</div>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">supervisord</span></code> will read config file <code class="docutils literal"><span class="pre">/etc/supervisord.conf</span></code>. We copy
+each <code class="docutils literal"><span class="pre">supervisord_services.conf</span></code>, <code class="docutils literal"><span class="pre">supervisord_builder.conf</span></code>,
+<code class="docutils literal"><span class="pre">supervisord_webserver.conf</span></code> to <code class="docutils literal"><span class="pre">/etc</span></code> in deployment.</p>
+<p>If your configuration file is not in those folder, then you need to do</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">supervisorctl</span> <span class="o">-</span><span class="n">c</span> <span class="n">PATH_TO_CONFIG_FILE</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="commands">
+<h2>Commands<a class="headerlink" href="#commands" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="pstree">
+<h3>pstree<a class="headerlink" href="#pstree" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">pstree</span></code> is useful to see what processes are running for each service.
+For example, in <code class="docutils literal"><span class="pre">builder</span></code> machine, run:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pstree</span> <span class="o">-</span><span class="n">a</span> <span class="o">-</span><span class="n">H7521</span> <span class="c1"># 7521 is supervisord pid</span>
+</pre></div>
+</div>
+<p>The output is:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>├─tmux new-session -d -s builder -n home
+  │   ├─bash
+  │   │   └─pstree -a -H7521
+  │   └─bash
+  │       └─supervisord /usr/local/bin/supervisord -n
+  │           ├─java -Dname=panalyzerservice...
+  │           │   └─29*[{java}]
+  │           ├─java -Dname=metadataservice...
+  │           │   └─31*[{java}]
+  │           └─start lambda_aws_home/jenkins/start
+  │               └─java -jar latest/jenkins.war
+  │                   ├─sh -xe /tmp/hudson3681575420591551853.sh
+  │                   │   └─docker run --net=host --rm -u 1000 -e TOOLS_DIR=/tools -e HOME=/home/builder1000 -e JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF8 -e ...
+  │                   │       └─3*[{docker}]
+  │                   └─42*[{java}]
+</pre></div>
+</div>
+<p>We could see we are currently building a project.</p>
+</div>
+<div class="section" id="caveat">
+<h3>Caveat<a class="headerlink" href="#caveat" title="Permalink to this headline">¶</a></h3>
+<p>Environment variable expansion</p>
+<p><a class="reference external" href="https://github.com/Supervisor/supervisor/issues/447">https://github.com/Supervisor/supervisor/issues/447</a></p>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="process_management_docker.html" class="btn btn-neutral float-right" title="Process Management in Production with Docker" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="user_guide.html" class="btn btn-neutral" title="Codatlas New User Guide" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Lambdalab Corp..
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

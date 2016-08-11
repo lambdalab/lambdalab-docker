@@ -13,8 +13,7 @@ services:
       file: docker-compose.yml
       service: elasticsearch
   liaceservice:
-    image: 'lambdalab/liaceservice:0.1'
-    network_mode: host
+    image: 'lambdalab/liaceservice:0.1.1'
     depends_on:
       - db
       - elasticsearch
@@ -22,36 +21,36 @@ services:
       - ./configs:/lambda_home/configs
       - ./logs:/lambda_home/logs
   metadataservice:
-    image: 'lambdalab/metadataservice:0.1'
-    network_mode: host
+    image: 'lambdalab/metadataservice:0.1.1'
     depends_on:
       - db
     volumes:
       - ./configs:/lambda_home/configs
       - ./logs:/lambda_home/logs
+    ports:
+      - 10060:10060
   jenkins:
     image: 'lambdalab/jenkins:0.1'
     environment:
-     - TOOLS_MOUNT=--volumes-from=tools
-     - HOST_JOBS=${PWD}/data/jenkins_home/jobs
-     - CACHE_DIR=artifacts
+      - TOOLS_MOUNT=--volumes-from=tools
+      - HOST_JOBS=${PWD}/data/jenkins_home/jobs
     volumes:
-     - ./data/editor_projects:/lambda_home/data/editor_projects # same as editorserver
-     - ./data/jenkins_home/jobs:/var/jenkins_home/jobs
-     - /var/run/docker.sock:/var/run/docker.sock
+      - ./data/editor_projects:/lambda_home/data/editor_projects # same as editorserver
+      - ./data/jenkins_home/jobs:/var/jenkins_home/jobs
+      - /var/run/docker.sock:/var/run/docker.sock
     volumes_from:
-     - tools
-    network_mode: host
+      - tools
+    ports:
+      - 8080:8080
+      - 50000:50000
   editorserver:
-    image: 'lambdalab/editorserver:0.1'
-    network_mode: host
+    image: 'lambdalab/editorserver:0.1.1'
     depends_on:
       - db
       - jenkins
+    ports:
+      - 9030:9030
     volumes:
       - ./configs:/lambda_home/configs
       - ./logs:/lambda_home/logs
       - ./data/editor_projects:/lambda_home/data/editor_projects # same as jenkins
-volumes:
-  db_volume: # used for mac and windows only
-    external: false

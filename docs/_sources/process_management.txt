@@ -1,0 +1,102 @@
+Process Management in Production
+================================
+
+We use `supervisor`_ as process control system. Instead of
+``start/stop/restart`` manually, we delegate these tasks to supervisor.
+Now release operation is done either via supervisor command line or web
+control panel.
+
+command line client
+~~~~~~~~~~~~~~~~~~~
+
+``supervisorctl`` is a command line util to manager process. Common
+operation are as follows: ### list process
+
+::
+
+    supervisorctl status
+
+start/stop/restart process
+--------
+
+::
+
+    supervisorctl start/stop/restart $process_name
+
+attach to a process’s foreground
+--------
+
+::
+
+    supervisorctl fg $process_name
+
+``tail -f`` a process
+--------
+
+::
+
+    supervisorctl tail -f $process_name
+
+Web control panel
+~~~~~~~~~~~~~~~~~~~
+
+Supervisord has a web control panel to do simple control, the port number is 9001.
+
+
+Configuration
+~~~~~~~~~~~~~~~~~~~
+
+``supervisord`` will read config file ``/etc/supervisord.conf``. We copy
+each ``supervisord_services.conf``, ``supervisord_builder.conf``,
+``supervisord_webserver.conf`` to ``/etc`` in deployment.
+
+If your configuration file is not in those folder, then you need to do
+
+::
+
+    supervisorctl -c PATH_TO_CONFIG_FILE
+
+
+Commands
+~~~~~~~~~~~~~~~~~~~
+
+pstree
+--------
+
+``pstree`` is useful to see what processes are running for each service.
+For example, in ``builder`` machine, run:
+
+::
+
+    pstree -a -H7521 # 7521 is supervisord pid
+
+The output is:
+
+::
+
+    ├─tmux new-session -d -s builder -n home
+      │   ├─bash
+      │   │   └─pstree -a -H7521
+      │   └─bash
+      │       └─supervisord /usr/local/bin/supervisord -n
+      │           ├─java -Dname=panalyzerservice...
+      │           │   └─29*[{java}]
+      │           ├─java -Dname=metadataservice...
+      │           │   └─31*[{java}]
+      │           └─start lambda_aws_home/jenkins/start
+      │               └─java -jar latest/jenkins.war
+      │                   ├─sh -xe /tmp/hudson3681575420591551853.sh
+      │                   │   └─docker run --net=host --rm -u 1000 -e TOOLS_DIR=/tools -e HOME=/home/builder1000 -e JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF8 -e ...
+      │                   │       └─3*[{docker}]
+      │                   └─42*[{java}]
+
+We could see we are currently building a project.
+
+Caveat
+--------
+
+Environment variable expansion
+
+https://github.com/Supervisor/supervisor/issues/447
+
+.. _supervisor: http://supervisord.org/

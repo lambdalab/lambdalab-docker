@@ -1,0 +1,353 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Process Management in Production with Docker &mdash; Lambdalab-docs 1.0.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Lambdalab-docs 1.0.0 documentation" href="index.html"/>
+        <link rel="prev" title="Process Management in Production" href="process_management.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index_enterprise.html" class="icon icon-home"> Lambdalab-docs
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="on_prem_install.html">Codatlas Private Cloud Version Quick Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_guide.html">Codatlas New User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="process_management.html">Process Management in Production</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Process Management in Production with Docker</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#install-docker-and-docker-compose">Install Docker and Docker Compose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#authentication">Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#git-repo">Git Repo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#command-line">Command line</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#list-process">list process</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#start-codatlas-enterprise-stack">start Codatlas enterprise stack</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#start-editor-server-stack">start Editor server stack</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#start-a-particular-services">start a particular services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#attach-to-a-all-containers-output">attach to a all containers&#8217; output</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#attach-to-a-containers-output">attach to a container’s output</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#stop-and-then-clean-all-the-contains">stop and then clean all the contains</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#run-command-inside-similar-to-ssh">run command inside (similar to ssh)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#find-help">find help</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#upgrade">Upgrade</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#web-control-panel">Web control panel</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index_enterprise.html">Lambdalab-docs</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index_enterprise.html">Docs</a> &raquo;</li>
+      
+    <li>Process Management in Production with Docker</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/process_management_docker.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="process-management-in-production-with-docker">
+<h1>Process Management in Production with Docker<a class="headerlink" href="#process-management-in-production-with-docker" title="Permalink to this headline">¶</a></h1>
+<p>We begin to use docker hub to store our dockerized services and docker-compose to orchestra the services.</p>
+<div class="section" id="install-docker-and-docker-compose">
+<h2>Install Docker and Docker Compose<a class="headerlink" href="#install-docker-and-docker-compose" title="Permalink to this headline">¶</a></h2>
+<p>Docker and Docker Compose needed to be installed at the first time.</p>
+<div class="highlight-shell"><div class="highlight"><pre><span></span>curl -sSL https://get.docker.com/ <span class="p">|</span> sh
+sudo usermod -aG docker <span class="nv">$USER</span>
+
+sudo sh -c <span class="s1">&#39;curl -L https://github.com/docker/compose/releases/download/1.8.0/docker-compose-`uname -s`-`uname -m` &gt; /usr/local/bin/docker-compose&#39;</span>
+sudo chmod +x /usr/local/bin/docker-compose
+</pre></div>
+</div>
+<p>If you are in China, you could do:</p>
+<div class="highlight-shell"><div class="highlight"><pre><span></span>curl -sSL https://get.daocloud.io/docker <span class="p">|</span> sh
+sudo usermod -aG docker <span class="nv">$USER</span>
+
+sudo sh -c <span class="s1">&#39;curl -L https://get.daocloud.io/docker/compose/releases/download/1.8.0/docker-compose-`uname -s`-`uname -m` &gt; /usr/local/bin/docker-compose&#39;</span>
+sudo chmod +x /usr/local/bin/docker-compose
+</pre></div>
+</div>
+<p>If you want to install on Mac or windows, please refer to: <a class="reference external" href="http://www.docker.com/products/docker#/mac">http://www.docker.com/products/docker#/mac</a></p>
+</div>
+<div class="section" id="authentication">
+<h2>Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline">¶</a></h2>
+<p>To be able to pull the images, you need log into docker hub with your user name which is already authorized by lambdalab
+If you haven&#8217;t got autherized, please send an email to <a class="reference external" href="mailto:lambdalab&#37;&#52;&#48;lambdalab&#46;io">lambdalab<span>&#64;</span>lambdalab<span>&#46;</span>io</a>.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>docker login $username
+</pre></div>
+</div>
+</div>
+<div class="section" id="git-repo">
+<h2>Git Repo<a class="headerlink" href="#git-repo" title="Permalink to this headline">¶</a></h2>
+<p>To save unnecessary authentication, the docker compose file and our configuration files (in HOCON format) is release
+through public git repo:</p>
+<p><code class="docutils literal"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">https://github.com/lambdalab/lambdalab-docker</span></code></p>
+<p>however you&#8217;ll need to login docker hub in order to pull images.</p>
+<p>The repo contains two sets of files: docker-compose.yml which is used to start the services. <code class="docutils literal"><span class="pre">configs/*.conf</span></code> files which
+are consumed by our services inside the container (the <code class="docutils literal"><span class="pre">configs</span></code> directory is mounted into all the containers that run
+our services)</p>
+<p>You could customize the services by directly modify the files in the git repo and do rebase everytime we have a update.</p>
+<p>All data generated by our services will be stored in <code class="docutils literal"><span class="pre">data</span></code> directory located in the same level with &#8216;docker-compose.yml&#8217;
+and all logs generated by our services will be stored in <code class="docutils literal"><span class="pre">logs</span></code> directory.</p>
+</div>
+<div class="section" id="command-line">
+<h2>Command line<a class="headerlink" href="#command-line" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">docker-compose</span></code> is a command line util to manage docker containers. It should be run under the folder where the <code class="docutils literal"><span class="pre">docker-compose.yaml</span></code> exists.
+Common operations are as follows:</p>
+<div class="section" id="list-process">
+<h3>list process<a class="headerlink" href="#list-process" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">docker</span><span class="o">-</span><span class="n">compose</span> <span class="n">ps</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="start-codatlas-enterprise-stack">
+<h3>start Codatlas enterprise stack<a class="headerlink" href="#start-codatlas-enterprise-stack" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">docker</span><span class="o">-</span><span class="n">compose</span> <span class="n">up</span> <span class="o">-</span><span class="n">d</span>
+</pre></div>
+</div>
+<p>which is equivalent to use</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">docker</span><span class="o">-</span><span class="n">compose</span> <span class="o">-</span><span class="n">f</span> <span class="n">docker</span><span class="o">-</span><span class="n">compose</span><span class="o">.</span><span class="n">yml</span> <span class="n">up</span> <span class="o">-</span><span class="n">d</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="start-editor-server-stack">
+<h3>start Editor server stack<a class="headerlink" href="#start-editor-server-stack" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">docker</span><span class="o">-</span><span class="n">compose</span> <span class="o">-</span><span class="n">f</span> <span class="n">docker</span><span class="o">-</span><span class="n">compose</span><span class="o">-</span><span class="n">editorserver</span><span class="o">.</span><span class="n">yml</span> <span class="n">up</span> <span class="o">-</span><span class="n">d</span>
+</pre></div>
+</div>
+<p>when docker compose file updated, run it again and it will automatically update your containers.</p>
+</div>
+<div class="section" id="start-a-particular-services">
+<h3>start a particular services<a class="headerlink" href="#start-a-particular-services" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span>docker-compose up -d $service
+</pre></div>
+</div>
+</div>
+<div class="section" id="attach-to-a-all-containers-output">
+<h3>attach to a all containers&#8217; output<a class="headerlink" href="#attach-to-a-all-containers-output" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">docker</span><span class="o">-</span><span class="n">compose</span> <span class="n">logs</span> <span class="o">-</span><span class="n">f</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="attach-to-a-containers-output">
+<h3>attach to a container’s output<a class="headerlink" href="#attach-to-a-containers-output" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span>docker-compose logs -f $service
+</pre></div>
+</div>
+</div>
+<div class="section" id="stop-and-then-clean-all-the-contains">
+<h3>stop and then clean all the contains<a class="headerlink" href="#stop-and-then-clean-all-the-contains" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">docker</span><span class="o">-</span><span class="n">compose</span> <span class="n">down</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="run-command-inside-similar-to-ssh">
+<h3>run command inside (similar to ssh)<a class="headerlink" href="#run-command-inside-similar-to-ssh" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span>docker-compose run $container /bin/bash
+</pre></div>
+</div>
+</div>
+<div class="section" id="find-help">
+<h3>find help<a class="headerlink" href="#find-help" title="Permalink to this headline">¶</a></h3>
+<p>There are also kill/restart/rm commands if needed. use</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>docker-compse help $command_name
+</pre></div>
+</div>
+<p>to find more details.</p>
+</div>
+</div>
+<div class="section" id="upgrade">
+<h2>Upgrade<a class="headerlink" href="#upgrade" title="Permalink to this headline">¶</a></h2>
+<p>The first step of upgrade is save you local config change by &#8216;git commit&#8217; or &#8216;git stash&#8217; and the do:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">pull</span> <span class="o">--</span><span class="n">rebase</span>
+</pre></div>
+</div>
+<p>on the docker compose git repo.</p>
+<p>Then as mentioned before, if just docker-compose file is changed,</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">docker</span><span class="o">-</span><span class="n">compose</span> <span class="n">up</span> <span class="o">-</span><span class="n">d</span>
+</pre></div>
+</div>
+<p>could automatically restart the outdated
+services. However, when config files under <cite>configs</cite> directory changes, <cite>docker-compose up -d</cite> will not know
+who to update, therefore, whenever changes are made to the config files, it is more safe to do</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">docker</span><span class="o">-</span><span class="n">compose</span> <span class="n">restart</span>
+</pre></div>
+</div>
+<p>to let tasks in containers run with new configs</p>
+</div>
+<div class="section" id="web-control-panel">
+<h2>Web control panel<a class="headerlink" href="#web-control-panel" title="Permalink to this headline">¶</a></h2>
+<p>There is no official Web UI exists, but check out francescou/docker-compose-ui for more information.</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="process_management.html" class="btn btn-neutral" title="Process Management in Production" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Lambdalab Corp..
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
