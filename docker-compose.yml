@@ -94,8 +94,12 @@ services:
     volumes:
       - ./configs:/lambda_home/configs
       - ./logs:/lambda_home/logs
+    ports:
+      - 9000:9000
   nginx:
     image: 'nginx'
+    depends_on:
+      - codatlas
     ports:
       - 80:80
     volumes:
