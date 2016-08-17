@@ -1,12 +1,12 @@
 version: '2'
 services:
   tools:
-    image: 'lambdalab/tools:0.1.1'
+    image: 'registry.lambdalab.io/lambdalab/tools:0.1.1'
     container_name: 'tools'
     volumes:
       - /lambda_home/
   db:
-    image: 'library/mongo:3.2'
+    image: 'registry.lambdalab.io/library/mongo:3.2'
     entrypoint:
       - mongod
       - --dbpath
@@ -24,9 +24,9 @@ services:
       - 27017:27017 # TODO hide this port in the future
       - 28017:28017
   redis: # TODO mount redis disk volume
-    image: 'library/redis:3.2'
+    image: 'registry.lambdalab.io/library/redis:3.2'
   elasticsearch:
-    image: 'lambdalab/elasticsearch:0.1.1'
+    image: 'registry.lambdalab.io/lambdalab/elasticsearch:0.1.1'
     volumes:
       - ./data/elasticsearch:/lambda_home/data/elasticsearch
       - ./configs:/lambda_home/configs
@@ -34,7 +34,7 @@ services:
     ports:
       - 9200:9200
   jenkins:
-    image: 'lambdalab/jenkins:0.1'
+    image: 'registry.lambdalab.io/lambdalab/jenkins:0.1'
     environment:
       - TOOLS_MOUNT=--volumes-from=tools
       - HOST_JOBS=${PWD}/data/jenkins_home/jobs
@@ -47,7 +47,7 @@ services:
       - 8080:8080
       - 50000:50000
   dataservice:
-    image: 'lambdalab/dataservice:0.1.1'
+    image: 'registry.lambdalab.io/lambdalab/dataservice:0.1.1'
     depends_on:
       - db
     volumes:
@@ -55,7 +55,7 @@ services:
       - ./logs:/lambda_home/logs
       - ./configs:/lambda_home/configs
   projectservice:
-    image: 'lambdalab/projectservice:0.1.1'
+    image: 'registry.lambdalab.io/lambdalab/projectservice:0.1.1'
     depends_on:
       - db
     volumes:
@@ -63,7 +63,7 @@ services:
       - ./logs:/lambda_home/logs
       - ./configs:/lambda_home/configs
   liaceservice:
-    image: 'lambdalab/liaceservice:0.1.1'
+    image: 'registry.lambdalab.io/lambdalab/liaceservice:0.1.1'
     depends_on:
       - db
       - elasticsearch
@@ -71,7 +71,7 @@ services:
       - ./configs:/lambda_home/configs
       - ./logs:/lambda_home/logs
   metadataservice:
-    image: 'lambdalab/metadataservice:0.1.1'
+    image: 'registry.lambdalab.io/lambdalab/metadataservice:0.1.1'
     depends_on:
       - db
     volumes:
@@ -80,14 +80,14 @@ services:
     ports:
       - 10060:10060
   pygments:
-    image: 'lambdalab/pygments:0.1.1'
+    image: 'registry.lambdalab.io/lambdalab/pygments:0.1.1'
     depends_on:
       - db
     volumes:
       - ./configs:/lambda_home/configs
       - ./logs:/lambda_home/logs
   codatlas:
-    image: 'lambdalab/codatlas:0.1.1'
+    image: 'registry.lambdalab.io/lambdalab/codatlas:0.1.1'
     depends_on:
       - db
       - redis
@@ -97,7 +97,7 @@ services:
     ports:
       - 9000:9000
   nginx:
-    image: 'library/nginx'
+    image: 'registry.lambdalab.io/library/nginx'
     depends_on:
       - codatlas
     ports:
