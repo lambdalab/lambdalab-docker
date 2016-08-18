@@ -58,6 +58,8 @@ services:
     image: 'lambdalab/projectservice:0.1.1'
     depends_on:
       - db
+    environment:
+      - JAVA_OPTS=-Dvars.jenkins.dockerImage=lambdalab/build_environment
     volumes:
       - ./data/projects:/lambda_home/data/projects
       - ./logs:/lambda_home/logs
@@ -106,3 +108,5 @@ services:
       - ./sites-available:/etc/nginx/conf.d
       - ./docs:/lambda_home/docs
       - ./plugins:/lambda_home/plugins
+  build_env:
+    image: 'lambdalab/build_environment:latest'
