@@ -85,17 +85,26 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Codatlas Private Cloud Version Quick Install</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#intro">Intro</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#download-package-and-initial-setup">Download Package and Initial Setup</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#start-processes-and-validate-installation">Start Processes and Validate Installation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#configure-github-integration">Configure Github Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#install-docker-and-docker-compose">Install Docker and Docker Compose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#authentication">Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#clone-git-repo-for-docker-compose">Clone Git Repo for Docker Compose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#download-docker-image-and-start-docker-services">Download Docker Image and Start Docker Services</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configure-github-integration">Configure Github Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#upgrade-codatlas">Upgrade Codatlas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#common-process-management-with-docker-compose">Common Process Management with Docker Compose</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#list-process">list process</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#start-whole-codatlas-enterprise-stack">start whole Codatlas enterprise stack</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#start-a-particular-services">start a particular services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#attach-to-a-all-containers-output">attach to a all containers&#8217; output</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#attach-to-a-containers-output">attach to a container’s output</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#stop-and-then-clean-all-the-contains">stop and then clean all the contains</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#run-command-inside-similar-to-ssh">run command inside (similar to ssh)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#find-help">find help</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="user_guide.html">Codatlas New User Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="process_management.html">Process Management in Production</a></li>
-<li class="toctree-l1"><a class="reference internal" href="process_management_docker.html">Process Management in Production with Docker</a></li>
 </ul>
 
             
@@ -145,37 +154,89 @@
 <div class="section" id="intro">
 <h2>Intro<a class="headerlink" href="#intro" title="Permalink to this headline">¶</a></h2>
 <p>This document is a step-by-step guide to install Codatlas on your private cloud server.</p>
+<p>Please note that due to different internet environment in China, we have a slight different install process if you are using a machine within China. Please make sure to ignore the steps marked by (<strong>Outside of China</strong>) and instead follow the steps marked by (<strong>In China</strong>) to speed up the installation.</p>
 </div>
 <div class="section" id="prerequisites">
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
 <p>In order to install Codatlas, make sure you have the following pre-requisites before you start:</p>
-<ul class="simple">
-<li>A invitation key sent from <a class="reference external" href="mailto:lambdalab&#37;&#52;&#48;lambdalab&#46;io">lambdalab<span>&#64;</span>lambdalab<span>&#46;</span>io</a></li>
-<li>An Ubuntu machine with root access. Note that port80(http), port443(https) and port22(ssh) need to be opened.</li>
+<ul>
+<li><p class="first">A DockerHub account or a registry.lambdalab.io account (if you are in China)</p>
+</li>
+<li><p class="first">An Ubuntu machine with root access. Note that port80(http) and port22(ssh) need to be opened.</p>
+</li>
+<li><p class="first">The Ubuntu machine must fulfill the minimum system requirements:</p>
+<blockquote>
+<div><ul class="simple">
+<li>8G RAM</li>
+<li>50G Hard Drive (SSD preferred)</li>
+</ul>
+</div></blockquote>
+</li>
 </ul>
 </div>
-<div class="section" id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="download-package-and-initial-setup">
-<h3>Download Package and Initial Setup<a class="headerlink" href="#download-package-and-initial-setup" title="Permalink to this headline">¶</a></h3>
-<p>SSH to the Ubuntu machine. Replace <code class="docutils literal"><span class="pre">$invitationKey</span></code> with the invitation key you received from <a class="reference external" href="mailto:lambdalab&#37;&#52;&#48;lambdalab&#46;io">lambdalab<span>&#64;</span>lambdalab<span>&#46;</span>io</a>, type the following command into a bash terminal, the script will download the binary and run nessesary intial configuration. Please select &#8220;Y&#8221; to any prompted confirmation.</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>bash &lt;<span class="o">(</span>curl -sSL http://enterprise.codatlas.com/install?key<span class="o">=</span><span class="nv">$invitationKey</span><span class="o">)</span>
+<div class="section" id="install-docker-and-docker-compose">
+<h2>Install Docker and Docker Compose<a class="headerlink" href="#install-docker-and-docker-compose" title="Permalink to this headline">¶</a></h2>
+<p>(<strong>Outside of China</strong>) If you have installed Docker and Docker Compose, you can skip this step. Otherwise You need to install Docker and Docker Compose first.</p>
+<div class="highlight-shell"><div class="highlight"><pre><span></span>curl -sSL https://get.docker.com/ <span class="p">|</span> sh
+sudo usermod -aG docker <span class="nv">$USER</span>
+
+sudo sh -c <span class="s1">&#39;curl -L https://github.com/docker/compose/releases/download/1.8.0/docker-compose-`uname -s`-`uname -m` &gt; /usr/local/bin/docker-compose&#39;</span>
+sudo chmod +x /usr/local/bin/docker-compose
 </pre></div>
 </div>
-<p>An optional argument &#8216;region&#8217; could be used to optimize download speed, the value could be &#8216;cn&#8217; or &#8216;us&#8217;, e.g.</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>bash &lt;<span class="o">(</span>curl -sSL <span class="s2">&quot;http://enterprise.codatlas.com/install?key=</span><span class="nv">$invitationKey</span><span class="s2">&amp;region=cn&quot;</span><span class="o">)</span>
+<p>(<strong>In China</strong>) If you are in <code class="docutils literal"><span class="pre">China</span></code>, instead you could do:</p>
+<div class="highlight-shell"><div class="highlight"><pre><span></span>curl -sSL https://get.daocloud.io/docker <span class="p">|</span> sh
+sudo usermod -aG docker <span class="nv">$USER</span>
+
+sudo sh -c <span class="s1">&#39;curl -L https://get.daocloud.io/docker/compose/releases/download/1.8.0/docker-compose-`uname -s`-`uname -m` &gt; /usr/local/bin/docker-compose&#39;</span>
+sudo chmod +x /usr/local/bin/docker-compose
+</pre></div>
+</div>
+<p>If this is first time you install Docker and Docker Compose, it is highly recommended to RESTART the machine before you continue:</p>
+<p><code class="docutils literal"><span class="pre">sudo</span> <span class="pre">reboot</span></code></p>
+</div>
+<div class="section" id="authentication">
+<h2>Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline">¶</a></h2>
+<p>(<strong>CentOS only</strong>) For some Linux version such as CentOS, Docker may not be automatically running after system reboot, in which case you may need to restart Docker process manually first to proceed:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">systemctl</span> <span class="n">start</span> <span class="n">docker</span>
+</pre></div>
+</div>
+<p>(<strong>Outside of China</strong>) To be able to pull the images, you need log into docker hub with your user name which is already authorized by lambdalab
+If you haven&#8217;t got authorized, please send an email to <a class="reference external" href="mailto:lambdalab&#37;&#52;&#48;lambdalab&#46;io">lambdalab<span>&#64;</span>lambdalab<span>&#46;</span>io</a>.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">login</span>
+</pre></div>
+</div>
+<p>(<strong>In China</strong>) If you are in <code class="docutils literal"><span class="pre">China</span></code>, please use our private registry for better speed.</p>
+<p>First, you need to register an account at</p>
+<p><code class="docutils literal"><span class="pre">https://registry.lambdalab.io</span></code></p>
+<p>and ask <a class="reference external" href="mailto:lambdalab&#37;&#52;&#48;lambdalab&#46;io">lambdalab<span>&#64;</span>lambdalab<span>&#46;</span>io</a> to authorize your account, then you need do</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">login</span> <span class="n">registry</span><span class="o">.</span><span class="n">lambdalab</span><span class="o">.</span><span class="n">io</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="start-processes-and-validate-installation">
-<h3>Start Processes and Validate Installation<a class="headerlink" href="#start-processes-and-validate-installation" title="Permalink to this headline">¶</a></h3>
-<p>Codatlas uses <code class="docutils literal"><span class="pre">supervisord</span></code> to manage the processes and services. To validate all processes are running normally, check supervisord status by running:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>supervisorctl status
-</pre></div>
+<div class="section" id="clone-git-repo-for-docker-compose">
+<h2>Clone Git Repo for Docker Compose<a class="headerlink" href="#clone-git-repo-for-docker-compose" title="Permalink to this headline">¶</a></h2>
+<p>(<strong>Outside of China</strong>) To save unnecessary authentication, the docker compose file and our configuration files (in HOCON format) is release
+through public git repo:</p>
+<p><code class="docutils literal"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">https://github.com/lambdalab/lambdalab-docker</span></code></p>
+<p>(<strong>In China</strong>) If you are in <code class="docutils literal"><span class="pre">China</span></code>, please use our CSDN git repository:</p>
+<p><code class="docutils literal"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">https://code.csdn.net/lambdalab/lambdalab-docker.git</span></code></p>
+<p>The repo contains two sets of files: docker-compose.yml which is used to start the services. <code class="docutils literal"><span class="pre">configs/*.conf</span></code> files which
+are consumed by our services inside the container (the <code class="docutils literal"><span class="pre">configs</span></code> directory is mounted into all the containers that run
+our services)</p>
+<p>You could customize the services by directly modify the files in the git repo and do rebase everytime we have a update.</p>
+<p>All data generated by our services will be stored in <code class="docutils literal"><span class="pre">data</span></code> directory located in the same level with &#8216;docker-compose.yml&#8217;
+and all logs generated by our services will be stored in <code class="docutils literal"><span class="pre">logs</span></code> directory.</p>
 </div>
-<p>and make sure that the output screen looks like this:</p>
-<img alt="_images/supervisord.png" class="align-center" src="_images/supervisord.png" />
-<p>For more details about managing Codatlas processes with supervisord, please refer to <a class="reference external" href="process_management.html">Process Management</a> chapter of the documentation.</p>
+<div class="section" id="download-docker-image-and-start-docker-services">
+<h2>Download Docker Image and Start Docker Services<a class="headerlink" href="#download-docker-image-and-start-docker-services" title="Permalink to this headline">¶</a></h2>
+<p>Under the root of the git repo(lambdalab-docker), run the following script:</p>
+<p>(<strong>In China</strong>) If you are in China, please use <strong>./cn-lambda-compose</strong> instead of <strong>./lambda-compose</strong> in all the following cases)</p>
+<p><code class="docutils literal"><span class="pre">./lambda-compose</span> <span class="pre">up</span> <span class="pre">-d</span></code></p>
+<p>This script will download or upgrade all necessary docker images and start all docker services, it could take a while for the first time. After the script is done, run the following command to verify the services:</p>
+<p><code class="docutils literal"><span class="pre">./lambda-compose</span> <span class="pre">ps</span></code></p>
+<p>You should see all the docker services lists similar to this:</p>
+<img alt="_images/dockerps.png" class="align-center" src="_images/dockerps.png" />
 <p>Open a browser and try to access the public DNS of the server with <code class="docutils literal"><span class="pre">http</span></code> protocal. For example, if you are using AWS as your cloud service, this address may look like:</p>
 <p><code class="docutils literal"><span class="pre">http://ec2-52-35-135-191.us-west-2.compute.amazonaws.com</span></code></p>
 <p>verify that you can see Codatlas home page as showing below:</p>
@@ -183,12 +244,12 @@
 <p>You are done with the setting up Codatlas if you are not using it with Github Integration. Please refer to <a class="reference external" href="user_guide.html">User Guide</a> for details on how to use it.</p>
 </div>
 <div class="section" id="configure-github-integration">
-<h3>Configure Github Integration<a class="headerlink" href="#configure-github-integration" title="Permalink to this headline">¶</a></h3>
+<h2>Configure Github Integration<a class="headerlink" href="#configure-github-integration" title="Permalink to this headline">¶</a></h2>
 <p>This section is only necessary if you want to integrate Codatlas with Github, it&#8217;s highly recommended if you use Github as your code hosting service.</p>
 <p>Log into your github account and go to <code class="docutils literal"><span class="pre">Settings</span></code> then <code class="docutils literal"><span class="pre">OAuth</span> <span class="pre">applications</span></code> then <code class="docutils literal"><span class="pre">Developer</span> <span class="pre">applications</span></code> tab.</p>
 <p>Click on <code class="docutils literal"><span class="pre">Register</span> <span class="pre">new</span> <span class="pre">application</span></code> button and fill in <code class="docutils literal"><span class="pre">Application</span> <span class="pre">name</span></code> and <code class="docutils literal"><span class="pre">Application</span> <span class="pre">description</span></code> section with preferred text. Fill in <code class="docutils literal"><span class="pre">Homepage</span> <span class="pre">URL</span></code> and <code class="docutils literal"><span class="pre">Authorization</span> <span class="pre">callback</span> <span class="pre">URL</span></code> with public DNS of the server, e.g. <code class="docutils literal"><span class="pre">http://ec2-52-35-135-191.us-west-2.compute.amazonaws.com</span></code>. Click <code class="docutils literal"><span class="pre">Register</span> <span class="pre">Application</span></code> to create a new OAuth application. Note <code class="docutils literal"><span class="pre">Client</span> <span class="pre">ID</span></code> and <code class="docutils literal"><span class="pre">Client</span> <span class="pre">Secret</span></code> Github provided with the newly created application.</p>
-<p>Go back to the bash terminal, open and edit the <code class="docutils literal"><span class="pre">application-enterprise.conf</span></code> file:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>vi <span class="nv">$HOME</span>/lambda_enterprise_home/codatlas/conf/application-enterprise.conf
+<p>Go back to the bash terminal, open and edit the <code class="docutils literal"><span class="pre">lambda-enterprise.conf</span></code> file:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>vi ./lambdalab-docker/configs/lambdalab-enterprise.conf
 </pre></div>
 </div>
 <p>And change <code class="docutils literal"><span class="pre">ClientId</span></code> and <code class="docutils literal"><span class="pre">ClientSecret</span></code> fields of both <code class="docutils literal"><span class="pre">github-private</span></code> and <code class="docutils literal"><span class="pre">github</span></code> sections to be the <code class="docutils literal"><span class="pre">Client</span> <span class="pre">ID</span></code> and <code class="docutils literal"><span class="pre">Client</span> <span class="pre">Secret</span></code> of your github application you just created:</p>
@@ -210,11 +271,88 @@ github <span class="o">{</span>
 </pre></div>
 </div>
 <p>After the change, restart Codatlas process:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>supervisorctl restart codatlas
+<div class="highlight-bash"><div class="highlight"><pre><span></span>./lambda-compose restart codatlas
 </pre></div>
 </div>
 <p>Go back to your browser and go to Codatlas Home Page, click on <code class="docutils literal"><span class="pre">Login</span></code> button on the top right, and then click on <code class="docutils literal"><span class="pre">Login</span> <span class="pre">with</span> <span class="pre">Github</span></code>, make sure you can successfully login with your Github account.</p>
 <p>You are done with integrate Codatlas with Github! Please refer to <a class="reference external" href="user_guide.html">User Manual</a> for details on how to use it.</p>
+</div>
+<div class="section" id="upgrade-codatlas">
+<h2>Upgrade Codatlas<a class="headerlink" href="#upgrade-codatlas" title="Permalink to this headline">¶</a></h2>
+<p>Upgrading Codatlas is made easy, fast and version-controlled as we manage update process with lambda-docker git repository. The first step of upgrade is save you local config change by &#8216;git commit&#8217; or &#8216;git stash&#8217; and the do:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">pull</span> <span class="o">--</span><span class="n">rebase</span>
+</pre></div>
+</div>
+<p>on the docker compose git repo.</p>
+<p>Then as mentioned before, if just docker-compose file is changed,</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">./</span><span class="k">lambda</span><span class="o">-</span><span class="n">compose</span> <span class="n">up</span> <span class="o">-</span><span class="n">d</span>
+</pre></div>
+</div>
+<p>could automatically restart the outdated
+services. However, when config files under <cite>configs</cite> directory changes, <cite>docker-compose up -d</cite> will not know
+who to update, therefore, whenever changes are made to the config files, it is more safe to do</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">./</span><span class="k">lambda</span><span class="o">-</span><span class="n">compose</span> <span class="n">restart</span>
+</pre></div>
+</div>
+<p>to let tasks in containers run with new configs</p>
+</div>
+<div class="section" id="common-process-management-with-docker-compose">
+<h2>Common Process Management with Docker Compose<a class="headerlink" href="#common-process-management-with-docker-compose" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">docker-compose</span></code> is a command line util to manage docker containers. It should be run under the folder where the <code class="docutils literal"><span class="pre">docker-compose.yaml</span></code> exists. We added a simple wrapper around it called <code class="docutils literal"><span class="pre">lambda-compose</span></code> to set all enviroment variables properly.
+Common operations are as follows:</p>
+<div class="section" id="list-process">
+<h3>list process<a class="headerlink" href="#list-process" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">./</span><span class="k">lambda</span><span class="o">-</span><span class="n">compose</span> <span class="n">ps</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="start-whole-codatlas-enterprise-stack">
+<h3>start whole Codatlas enterprise stack<a class="headerlink" href="#start-whole-codatlas-enterprise-stack" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">./</span><span class="k">lambda</span><span class="o">-</span><span class="n">compose</span> <span class="n">up</span> <span class="o">-</span><span class="n">d</span>
+</pre></div>
+</div>
+<p>which is equivalent to use</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">./</span><span class="k">lambda</span><span class="o">-</span><span class="n">compose</span> <span class="o">-</span><span class="n">f</span> <span class="n">docker</span><span class="o">-</span><span class="n">compose</span><span class="o">.</span><span class="n">yml</span> <span class="n">up</span> <span class="o">-</span><span class="n">d</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="start-a-particular-services">
+<h3>start a particular services<a class="headerlink" href="#start-a-particular-services" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span>./lambda-compose up -d $service
+</pre></div>
+</div>
+</div>
+<div class="section" id="attach-to-a-all-containers-output">
+<h3>attach to a all containers&#8217; output<a class="headerlink" href="#attach-to-a-all-containers-output" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">./</span><span class="k">lambda</span><span class="o">-</span><span class="n">compose</span> <span class="n">logs</span> <span class="o">-</span><span class="n">f</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="attach-to-a-containers-output">
+<h3>attach to a container’s output<a class="headerlink" href="#attach-to-a-containers-output" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span>./lambda-compose logs -f $service
+</pre></div>
+</div>
+</div>
+<div class="section" id="stop-and-then-clean-all-the-contains">
+<h3>stop and then clean all the contains<a class="headerlink" href="#stop-and-then-clean-all-the-contains" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">./</span><span class="k">lambda</span><span class="o">-</span><span class="n">compose</span> <span class="n">down</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="run-command-inside-similar-to-ssh">
+<h3>run command inside (similar to ssh)<a class="headerlink" href="#run-command-inside-similar-to-ssh" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span>./lambda-compose run $container /bin/bash
+</pre></div>
+</div>
+</div>
+<div class="section" id="find-help">
+<h3>find help<a class="headerlink" href="#find-help" title="Permalink to this headline">¶</a></h3>
+<p>There are also kill/restart/rm commands if needed. use</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>./lambda-compse help $command_name
+</pre></div>
+</div>
+<p>to find more details.</p>
 </div>
 </div>
 </div>

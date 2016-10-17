@@ -13,6 +13,4 @@ Contents:
 
    on_prem_install.rst
    user_guide.rst
-   process_management.rst
-   process_management_docker.rst
 

@@ -1,7 +1,7 @@
 version: '2'
 services:
   tools:
-    image: 'registry.lambdalab.io/lambdalab/tools:0.1.1'
+    image: 'registry.lambdalab.io/lambdalab/tools:0.1.2'
     container_name: 'tools'
     volumes:
       - /lambda_home/
