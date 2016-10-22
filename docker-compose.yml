@@ -1,7 +1,7 @@
 version: '2'
 services:
   tools:
-    image: 'lambdalab/tools:0.1.2'
+    image: 'lambdalab/tools:0.1.1'
     container_name: 'tools'
     volumes:
       - /lambda_home/
@@ -25,6 +25,8 @@ services:
       - 28017:28017
   redis: # TODO mount redis disk volume
     image: 'library/redis:3.2'
+    command:
+      - --bind 0.0.0.0
   elasticsearch:
     image: 'lambdalab/elasticsearch:0.1.1'
     volumes:
@@ -64,6 +66,7 @@ services:
       - ./data/projects:/lambda_home/data/projects
       - ./logs:/lambda_home/logs
       - ./configs:/lambda_home/configs
+      - ~/.ssh:/root/.ssh
   liaceservice:
     image: 'lambdalab/liaceservice:0.1.1'
     depends_on:

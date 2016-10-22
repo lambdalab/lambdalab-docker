@@ -66,6 +66,7 @@ services:
       - ./data/projects:/lambda_home/data/projects
       - ./logs:/lambda_home/logs
       - ./configs:/lambda_home/configs
+      - ~/.ssh:/root/.ssh
   liaceservice:
     image: 'registry.lambdalab.io/lambdalab/liaceservice:0.1.1'
     depends_on:
