@@ -20,6 +20,18 @@ In order to install Codatlas, make sure you have the following pre-requisites be
     * 8G RAM
     * 50G Hard Drive (SSD preferred)
 
+**Important Security Notice**
+Due to its service oriented architecture, Codatlas will use certain ports for communication between services. These ports are only used internally. It is highly recommended for you to NOT expose thse ports to external network to prevent these ports to be exploited by attackers. Here are a list of these ports:
+
+.. code-block:: shell
+
+    port 8080
+    port 9000
+    port 10060
+    port 27017
+    port 28017
+    port 50000
+
 Install Docker and Docker Compose
 -------------
 

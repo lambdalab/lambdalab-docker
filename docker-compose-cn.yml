@@ -1,7 +1,7 @@
 version: '2'
 services:
   tools:
-    image: 'registry.lambdalab.io/lambdalab/tools:0.1.1'
+    image: 'registry.lambdalab.io/lambdalab/tools:0.2.0'
     container_name: 'tools'
     volumes:
       - /lambda_home/
@@ -28,7 +28,7 @@ services:
     command:
       - --bind 0.0.0.0
   elasticsearch:
-    image: 'registry.lambdalab.io/lambdalab/elasticsearch:0.1.1'
+    image: 'registry.lambdalab.io/lambdalab/elasticsearch:0.2.0'
     volumes:
       - ./data/elasticsearch:/lambda_home/data/elasticsearch
       - ./configs:/lambda_home/configs
@@ -49,7 +49,7 @@ services:
       - 8080:8080
       - 50000:50000
   dataservice:
-    image: 'registry.lambdalab.io/lambdalab/dataservice:0.1.1'
+    image: 'registry.lambdalab.io/lambdalab/dataservice:0.2.0'
     depends_on:
       - db
     volumes:
@@ -57,7 +57,7 @@ services:
       - ./logs:/lambda_home/logs
       - ./configs:/lambda_home/configs
   projectservice:
-    image: 'registry.lambdalab.io/lambdalab/projectservice:0.1.1'
+    image: 'registry.lambdalab.io/lambdalab/projectservice:0.2.0'
     depends_on:
       - db
     environment:
@@ -68,7 +68,7 @@ services:
       - ./configs:/lambda_home/configs
       - ~/.ssh:/root/.ssh
   liaceservice:
-    image: 'registry.lambdalab.io/lambdalab/liaceservice:0.1.1'
+    image: 'registry.lambdalab.io/lambdalab/liaceservice:0.2.0'
     depends_on:
       - db
       - elasticsearch
@@ -76,7 +76,7 @@ services:
       - ./configs:/lambda_home/configs
       - ./logs:/lambda_home/logs
   metadataservice:
-    image: 'registry.lambdalab.io/lambdalab/metadataservice:0.1.1'
+    image: 'registry.lambdalab.io/lambdalab/metadataservice:0.2.0'
     depends_on:
       - db
     volumes:
@@ -85,14 +85,14 @@ services:
     ports:
       - 10060:10060
   pygments:
-    image: 'registry.lambdalab.io/lambdalab/pygments:0.1.1'
+    image: 'registry.lambdalab.io/lambdalab/pygments:0.2.0'
     depends_on:
       - db
     volumes:
       - ./configs:/lambda_home/configs
       - ./logs:/lambda_home/logs
   codatlas:
-    image: 'registry.lambdalab.io/lambdalab/codatlas:0.1.1'
+    image: 'registry.lambdalab.io/lambdalab/codatlas:0.2.0'
     depends_on:
       - db
       - redis

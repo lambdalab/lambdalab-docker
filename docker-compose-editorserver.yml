@@ -13,7 +13,7 @@ services:
       file: docker-compose.yml
       service: elasticsearch
   liaceservice:
-    image: 'lambdalab/liaceservice:0.1.1'
+    image: 'lambdalab/liaceservice:0.2.0'
     depends_on:
       - db
       - elasticsearch
@@ -21,7 +21,7 @@ services:
       - ./configs:/lambda_home/configs
       - ./logs:/lambda_home/logs
   metadataservice:
-    image: 'lambdalab/metadataservice:0.1.1'
+    image: 'lambdalab/metadataservice:0.2.0'
     depends_on:
       - db
     volumes:
@@ -44,7 +44,7 @@ services:
       - 8080:8080
       - 50000:50000
   editorserver:
-    image: 'lambdalab/editorserver:0.1.1'
+    image: 'lambdalab/editorserver:0.2.0'
     depends_on:
       - db
       - jenkins
