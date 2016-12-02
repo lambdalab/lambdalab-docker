@@ -13,7 +13,7 @@ services:
       file: docker-compose.yml
       service: elasticsearch
   liaceservice:
-    image: 'lambdalab/liaceservice:0.2.1'
+    image: 'lambdalab/liaceservice:0.2.2'
     depends_on:
       - db
       - elasticsearch
@@ -21,7 +21,7 @@ services:
       - ./configs:/lambda_home/configs
       - ./logs:/lambda_home/logs
   metadataservice:
-    image: 'lambdalab/metadataservice:0.2.1'
+    image: 'lambdalab/metadataservice:0.2.2'
     depends_on:
       - db
     volumes:
@@ -30,7 +30,7 @@ services:
     ports:
       - 10060:10060
   jenkins:
-    image: 'lambdalab/jenkins:0.1'
+    image: 'lambdalab/jenkins:0.2'
     environment:
       - TOOLS_MOUNT=--volumes-from=tools
       - HOST_JOBS=${PWD}/data/jenkins_home/jobs
@@ -44,7 +44,7 @@ services:
       - 8080:8080
       - 50000:50000
   editorserver:
-    image: 'lambdalab/editorserver:0.2.1'
+    image: 'lambdalab/editorserver:0.2.2'
     depends_on:
       - db
       - jenkins
