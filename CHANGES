@@ -1,0 +1,5 @@
+0.2.3
+------
+Add support for login with LDAP
+Add support to customize build command through UI
+Bug fixes
