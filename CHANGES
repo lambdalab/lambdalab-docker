@@ -1,3 +1,7 @@
+0.2.5
+------
+Support Different Git address formats such as http://$IP/$REPO Name
+
 0.2.4
 ------
 Be able to select branch to be analyzed
