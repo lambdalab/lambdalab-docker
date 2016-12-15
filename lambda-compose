@@ -9,4 +9,6 @@ export SCRIPT_DIR=$(abs_path $(dirname $0))
 
 cd $SCRIPT_DIR
 
+export REGISTRY=""
+
 docker-compose $@

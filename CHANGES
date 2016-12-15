@@ -1,3 +1,7 @@
+0.2.6
+Be able to config LDAP in UI
+Bug fixes
+
 0.2.5
 ------
 Support Different Git address formats such as http://$IP/$REPO Name
