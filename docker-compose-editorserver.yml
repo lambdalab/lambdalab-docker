@@ -12,16 +12,8 @@ services:
     extends:
       file: docker-compose.yml
       service: elasticsearch
-  liaceservice:
-    image: 'lambdalab/liaceservice:0.2.3'
-    depends_on:
-      - db
-      - elasticsearch
-    volumes:
-      - ./configs:/lambda_home/configs
-      - ./logs:/lambda_home/logs
   metadataservice:
-    image: 'lambdalab/metadataservice:0.2.3'
+    image: 'lambdalab/metadataservice:${VERSION}'
     depends_on:
       - db
     volumes:
@@ -44,7 +36,7 @@ services:
       - 8080:8080
       - 50000:50000
   editorserver:
-    image: 'lambdalab/editorserver:0.2.3'
+    image: 'lambdalab/editorserver:${VERSION}'
     depends_on:
       - db
       - jenkins
