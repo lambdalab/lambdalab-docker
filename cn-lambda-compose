@@ -11,4 +11,4 @@ cd $SCRIPT_DIR
 
 export REGISTRY=registry.lambdalab.io/
 
-docker-compose -f docker-compose-cn.yml $@
+docker-compose $@
