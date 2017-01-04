@@ -1,4 +1,4 @@
-0.2.8
+0.2.9
 Support GBK encoding in CPP analyzer
 Bug fixes:
   Set all container's encoding with UTF-8
