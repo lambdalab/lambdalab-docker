@@ -1,0 +1,1 @@
+FROM lambdalab/build_environment:latest
