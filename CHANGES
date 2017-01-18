@@ -1,6 +1,7 @@
 0.2.10
 Allow add analysis configure before input project
 Support GBK in Java program
+CPP analyzer would finder header more aggresively
 Bug fixes
   Will not crawl submodule by default
   Improve directory tree performance
