@@ -44,7 +44,7 @@ services:
 <<<<<<< HEAD
 =======
   jenkins:
-    image: '${REGISTRY}lambdalab/jenkins:0.2'
+    image: '${REGISTRY}lambdalab/jenkins:${VERSION}'
     environment:
       - HOST_JOBS=${PWD}/data/jenkins_home/jobs
     volumes:
