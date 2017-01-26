@@ -1,3 +1,6 @@
+0.2.12
+Use access token to clone private repo instead of using deploy key
+
 0.2.11
 Bug fixes
   Handle CPP analyzer crashes
