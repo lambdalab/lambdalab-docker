@@ -1,15 +1,5 @@
 version: '2'
 services:
-<<<<<<< HEAD
-=======
-  tools:
-    build:
-      context: ./tools/${REGISTRY}
-    image: local/tools
-    container_name: 'tools'
-    volumes:
-      - ./android-sdk-linux:/lambda_home/tools/android-sdk
->>>>>>> upgrade to 0.2.11
   db:
     image: '${REGISTRY}library/mongo:3.4'
     entrypoint:
@@ -41,8 +31,6 @@ services:
     ports:
       - 9200:9200
       - 9300:9300
-<<<<<<< HEAD
-=======
   jenkins:
     image: '${REGISTRY}lambdalab/jenkins:${VERSION}'
     environment:
@@ -55,7 +43,6 @@ services:
       - 50000:50000
     depends_on:
       - tools
->>>>>>> upgrade to 0.2.11
   dataservice:
     image: '${REGISTRY}lambdalab/dataservice:${VERSION}'
     volumes:
@@ -68,11 +55,8 @@ services:
       - 9418:9418
   projectservice:
     image: '${REGISTRY}lambdalab/projectservice:${VERSION}'
-<<<<<<< HEAD
-=======
     environment:
       - JAVA_OPTS=-Dvars.jenkins.dockerImage=local/tools
->>>>>>> upgrade to 0.2.11
     volumes:
       - ./data/projects:/lambda_home/data/projects
       - ./logs:/lambda_home/logs
@@ -113,7 +97,6 @@ services:
       - ./sites-available:/etc/nginx/conf.d
       - ./docs:/lambda_home/docs
       - ./plugins:/lambda_home/plugins
-<<<<<<< HEAD
       - ./certs:/lambda_home/certs
   jenkins:
     image: '${REGISTRY}lambdalab/jenkins:${VERSION}'
@@ -132,8 +115,3 @@ services:
     volumes:
       - ./android-sdk-linux:/lambda_home/tools/android-sdk
       - ./data/jenkins_slave_home:/home/jenkins
-    depends_on:
-      - jenkins
-      - metadataservice
-=======
->>>>>>> upgrade to 0.2.11
