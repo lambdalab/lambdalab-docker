@@ -1,3 +1,8 @@
+0.2.13
+Largely improve the performance of indexing project
+Upgrade to elasticsearch 5
+Easy to create create jenkins slave
+
 0.2.12
 Use access token to clone private repo instead of using deploy key
 
