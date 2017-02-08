@@ -1,12 +1,5 @@
 version: '2'
 services:
-  tools:
-    build:
-      context: ./tools/${REGISTRY}
-    image: local/tools
-    container_name: 'tools'
-    volumes:
-      - ./android-sdk-linux:/lambda_home/tools/android-sdk
   db:
     image: '${REGISTRY}library/mongo:3.2'
     entrypoint:
@@ -37,18 +30,7 @@ services:
       - ./logs/elasticsearch:/lambda_home/data/logs
     ports:
       - 9200:9200
-  jenkins:
-    image: '${REGISTRY}lambdalab/jenkins:${VERSION}'
-    environment:
-      - HOST_JOBS=${PWD}/data/jenkins_home/jobs
-    volumes:
-      - ./data/jenkins_home/jobs:/var/jenkins_home/jobs
-      - /var/run/docker.sock:/var/run/docker.sock
-    ports:
-      - 8080:8080
-      - 50000:50000
-    depends_on:
-      - tools
+      - 9300:9300
   dataservice:
     image: '${REGISTRY}lambdalab/dataservice:${VERSION}'
     depends_on:
@@ -65,8 +47,6 @@ services:
     image: '${REGISTRY}lambdalab/projectservice:${VERSION}'
     depends_on:
       - db
-    environment:
-      - JAVA_OPTS=-Dvars.jenkins.dockerImage=local/tools
     volumes:
       - ./data/projects:/lambda_home/data/projects
       - ./logs:/lambda_home/logs
@@ -116,3 +96,22 @@ services:
       - ./sites-available:/etc/nginx/conf.d
       - ./docs:/lambda_home/docs
       - ./plugins:/lambda_home/plugins
+  jenkins:
+    image: '${REGISTRY}lambdalab/jenkins:${VERSION}'
+    volumes:
+      - ./data/jenkins_home:/var/jenkins_home
+    ports:
+      - 8080:8080
+      - 50000:50000
+  jenkins-slave:
+    build:
+      context: ./tools/${REGISTRY}
+    image: local/tools
+    environment:
+      - JENKINS_MASTER=http://jenkins:8080
+      - EXECUTOR_NUM=4
+    volumes:
+      - ./android-sdk-linux:/lambda_home/tools/android-sdk
+      - ./data/jenkins_slave_home:/home/jenkins
+    depends_on:
+      - jenkins
