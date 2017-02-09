@@ -11,4 +11,5 @@ cd $SCRIPT_DIR
 
 export REGISTRY=""
 
+docker-compose build -f docker-compose.yml
 docker-compose $@

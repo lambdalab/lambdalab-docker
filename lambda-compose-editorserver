@@ -11,4 +11,5 @@ cd $SCRIPT_DIR
 
 export REGISTRY=""
 
+docker-compose --build -f docker-compose-editorserver.yml
 docker-compose -f docker-compose-editorserver.yml $@
