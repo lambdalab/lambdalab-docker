@@ -11,5 +11,10 @@ cd $SCRIPT_DIR
 
 export REGISTRY=""
 
+if [ $(sysctl -n vm.max_map_count) -lt 262144 ]; then
+  echo "vm.max_map_count size to low, increasing to 262144"
+  sudo sysctl -w vm.max_map_count=262144
+fi
+
 docker-compose build -f docker-compose.yml
 docker-compose $@
