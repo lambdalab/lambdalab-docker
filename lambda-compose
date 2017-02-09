@@ -9,12 +9,17 @@ export SCRIPT_DIR=$(abs_path $(dirname $0))
 
 cd $SCRIPT_DIR
 
-export REGISTRY=""
+export REGISTRY=${REGISTRY:=''}
 
-if [ $(sysctl -n vm.max_map_count) -lt 262144 ]; then
-  echo "vm.max_map_count size to low, increasing to 262144"
-  sudo sysctl -w vm.max_map_count=262144
+if [ $(uname) = 'Darwin' ]; then
+  echo "You are using mac os which is not officially supported for product use"
+else
+  if [ $(sysctl -n vm.max_map_count) -lt 262144 ]; then
+    echo "vm.max_map_count size to low, increasing to 262144"
+    sudo sysctl -w vm.max_map_count=262144
+  fi
 fi
 
-docker-compose build -f docker-compose.yml
+docker-compose build --pull jenkins-slave
 docker-compose $@
+
