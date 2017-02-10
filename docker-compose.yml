@@ -115,3 +115,5 @@ services:
       - ./data/jenkins_slave_home:/home/jenkins
     depends_on:
       - jenkins
+      - metadataservice
+    network_mode: host
