@@ -31,18 +31,6 @@ services:
     ports:
       - 9200:9200
       - 9300:9300
-  jenkins:
-    image: '${REGISTRY}lambdalab/jenkins:${VERSION}'
-    environment:
-      - HOST_JOBS=${PWD}/data/jenkins_home/jobs
-    volumes:
-      - ./data/jenkins_home/jobs:/var/jenkins_home/jobs
-      - /var/run/docker.sock:/var/run/docker.sock
-    ports:
-      - 8080:8080
-      - 50000:50000
-    depends_on:
-      - tools
   dataservice:
     image: '${REGISTRY}lambdalab/dataservice:${VERSION}'
     volumes:
@@ -55,8 +43,6 @@ services:
       - 9418:9418
   projectservice:
     image: '${REGISTRY}lambdalab/projectservice:${VERSION}'
-    environment:
-      - JAVA_OPTS=-Dvars.jenkins.dockerImage=local/tools
     volumes:
       - ./data/projects:/lambda_home/data/projects
       - ./logs:/lambda_home/logs
@@ -115,3 +101,4 @@ services:
     volumes:
       - ./android-sdk-linux:/lambda_home/tools/android-sdk
       - ./data/jenkins_slave_home:/home/jenkins
+    network_mode: host
