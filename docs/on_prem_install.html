@@ -30,6 +30,9 @@
   
 
   
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="Lambdalab-docs 1.0.0 documentation" href="index.html"/>
         <link rel="next" title="Codatlas New User Guide" href="user_guide.html"/>
         <link rel="prev" title="Lambdalab software documentation" href="index_enterprise.html"/> 
@@ -91,6 +94,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#download-docker-image-and-start-docker-services">Download Docker Image and Start Docker Services</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#configure-github-integration">Configure Github Integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#upgrade-codatlas">Upgrade Codatlas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#deploy-codatlas-with-multiple-machines">Deploy Codatlas with Multiple Machines</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#common-process-management-with-docker-compose">Common Process Management with Docker Compose</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#list-process">list process</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#start-whole-codatlas-enterprise-stack">start whole Codatlas enterprise stack</a></li>
@@ -139,7 +143,7 @@
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="_sources/on_prem_install.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/on_prem_install.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -172,17 +176,21 @@
 </ul>
 </div></blockquote>
 </li>
+<li><p class="first">Make sure max virtual memory is big enough by running</p>
+</li>
 </ul>
+<div class="highlight-shell"><div class="highlight"><pre><span></span>sudo sysctl -w vm.max_map_count<span class="o">=</span><span class="m">262144</span>
+</pre></div>
+</div>
 <p><strong>Important Security Notice</strong>
 Due to its service oriented architecture, Codatlas will use certain ports for communication between services. These ports are only used internally. It is highly recommended for you to NOT expose thse ports to external network to prevent these ports to be exploited by attackers. Here are a list of these ports:</p>
-<div class="highlight-shell"><div class="highlight"><pre><span></span>port 8080
+<blockquote>
+<div>port 8080
 port 9000
 port 10060
 port 27017
 port 28017
-port 50000
-</pre></div>
-</div>
+port 50000</div></blockquote>
 </div>
 <div class="section" id="install-docker-and-docker-compose">
 <h2>Install Docker and Docker Compose<a class="headerlink" href="#install-docker-and-docker-compose" title="Permalink to this headline">¶</a></h2>
@@ -190,7 +198,7 @@ port 50000
 <div class="highlight-shell"><div class="highlight"><pre><span></span>curl -sSL https://get.docker.com/ <span class="p">|</span> sh
 sudo usermod -aG docker <span class="nv">$USER</span>
 
-sudo sh -c <span class="s1">&#39;curl -L https://github.com/docker/compose/releases/download/1.8.0/docker-compose-`uname -s`-`uname -m` &gt; /usr/local/bin/docker-compose&#39;</span>
+sudo sh -c <span class="s1">&#39;curl -L https://github.com/docker/compose/releases/download/1.10.0/docker-compose-`uname -s`-`uname -m` &gt; /usr/local/bin/docker-compose&#39;</span>
 sudo chmod +x /usr/local/bin/docker-compose
 </pre></div>
 </div>
@@ -198,7 +206,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 <div class="highlight-shell"><div class="highlight"><pre><span></span>curl -sSL https://get.daocloud.io/docker <span class="p">|</span> sh
 sudo usermod -aG docker <span class="nv">$USER</span>
 
-sudo sh -c <span class="s1">&#39;curl -L https://get.daocloud.io/docker/compose/releases/download/1.8.0/docker-compose-`uname -s`-`uname -m` &gt; /usr/local/bin/docker-compose&#39;</span>
+sudo sh -c <span class="s1">&#39;curl -L https://get.daocloud.io/docker/compose/releases/download/1.10.0/docker-compose-`uname -s`-`uname -m` &gt; /usr/local/bin/docker-compose&#39;</span>
 sudo chmod +x /usr/local/bin/docker-compose
 </pre></div>
 </div>
@@ -304,7 +312,44 @@ who to update, therefore, whenever changes are made to the config files, it is m
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">./</span><span class="k">lambda</span><span class="o">-</span><span class="n">compose</span> <span class="n">restart</span>
 </pre></div>
 </div>
-<p>to let tasks in containers run with new configs</p>
+<p>to let tasks in containers run with new configs.</p>
+</div>
+<div class="section" id="deploy-codatlas-with-multiple-machines">
+<h2>Deploy Codatlas with Multiple Machines<a class="headerlink" href="#deploy-codatlas-with-multiple-machines" title="Permalink to this headline">¶</a></h2>
+<p>If your repositories take a lot of resources to build, it could be helpful or necessary to isolate build related services from frontend services from underlying database and search index. Fortunately Codatlas&#8217;s micro-service architecture and dockerized deployment makes this easy.</p>
+<p>The recommended way to seperate the services will be group them into 3 groups, namely:</p>
+<ol class="arabic simple">
+<li>Frontend services: codatlas, redis, liaceservice, dataservice, projectservice, ngnix, jenkins(master)</li>
+<li>Db services: db, elasticsearch</li>
+<li>Build services (could have more than one machines): metadataservices, jenkins-slave</li>
+</ol>
+<p>To start, make sure you have 3 machines ready with docker and docker-compose installed, and lambdalab-docker repository checked out.</p>
+<p>On all three machines, switch to <code class="docutils literal"><span class="pre">distributed</span></code> branch by</p>
+<p><code class="docutils literal"><span class="pre">git</span> <span class="pre">pull</span></code></p>
+<p><code class="docutils literal"><span class="pre">git</span> <span class="pre">checkout</span> <span class="pre">distributed</span></code></p>
+<p>and add the hostname of each machine by edit the following file:</p>
+<p><code class="docutils literal"><span class="pre">vi</span> <span class="pre">configs/lambdalab-cluster.conf</span></code></p>
+<p>Change the following lines of config variable to the hostname of the machines like the following:</p>
+<div class="highlight-shell"><div class="highlight"><pre><span></span><span class="c1"># frontend cluster host name, for single machine deployment set this to codatlas</span>
+vars.cluster.frontend <span class="o">=</span> <span class="s2">&quot;ec2-35-163-118-155.us-west-2.compute.amazonaws.com&quot;</span>
+
+<span class="c1"># builder cluster host name, for single machine deployment set this to jenkins</span>
+vars.cluster.builder <span class="o">=</span> <span class="s2">&quot;ec2-35-164-137-4.us-west-2.compute.amazonaws.com&quot;</span>
+
+<span class="c1"># db cluster host name, for single machine deployment set this to db</span>
+vars.cluster.db <span class="o">=</span> <span class="s2">&quot;ec2-35-166-120-102.us-west-2.compute.amazonaws.com&quot;</span>
+</pre></div>
+</div>
+<p>Specify the jenkins master address for their slaves at in <code class="docutils literal"><span class="pre">docker-compose.yml</span></code>. Replace
+<code class="docutils literal"><span class="pre">-</span> <span class="pre">JENKINS_MASTER=http://jenkins:8080</span></code> to your jenkins master&#8217;s address.</p>
+<p>Run the following command on each machine respectively:</p>
+<p>On Frondend machine:</p>
+<p><code class="docutils literal"><span class="pre">./lambda-compose</span> <span class="pre">up</span> <span class="pre">-d</span> <span class="pre">liaceservice</span> <span class="pre">dataservice</span> <span class="pre">projectservice</span> <span class="pre">codatlas</span> <span class="pre">nginx</span> <span class="pre">redis</span> <span class="pre">pygments</span> <span class="pre">jenkins</span></code></p>
+<p>On Db machine:</p>
+<p><code class="docutils literal"><span class="pre">/lambda-compose</span> <span class="pre">up</span> <span class="pre">-d</span> <span class="pre">db</span> <span class="pre">elasticsearch</span></code></p>
+<p>On Builder machine(s):</p>
+<p><code class="docutils literal"><span class="pre">/lambda-compose</span> <span class="pre">up</span> <span class="pre">-d</span> <span class="pre">metadataservice</span> <span class="pre">jenkins-slave</span></code></p>
+<p>After everything is running, you should be able to access Codatlas by visiting frontend machine&#8217;s hostname from your browser.</p>
 </div>
 <div class="section" id="common-process-management-with-docker-compose">
 <h2>Common Process Management with Docker Compose<a class="headerlink" href="#common-process-management-with-docker-compose" title="Permalink to this headline">¶</a></h2>

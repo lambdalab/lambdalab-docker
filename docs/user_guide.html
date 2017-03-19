@@ -30,6 +30,9 @@
   
 
   
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="Lambdalab-docs 1.0.0 documentation" href="index.html"/>
         <link rel="prev" title="Codatlas Private Cloud Version Quick Install" href="on_prem_install.html"/> 
 
@@ -83,12 +86,16 @@
                 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="on_prem_install.html">Codatlas Private Cloud Version Quick Install</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Codatlas New User Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#config-to-use-ldap">Config to use LDAP</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#create-an-account">Create an Account</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#add-repository">Add Repository</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#use-github-plugin">Use Github Plugin</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#install-and-config-plugin">Install and Config Plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#use-github-gitlab-plugin">Use Github/Gitlab Plugin</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#install-and-config-browser-plugin">Install and Config Browser Plugin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#install-and-config-native-gitlab-plugin">Install and Config Native Gitlab Plugin</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#change-settings-xml-for-maven-project">Change settings.xml for Maven project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#customize-repository-build">Customize Repository Build</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#obtain-build-log-from-jenkins">Obtain Build Log from Jenkins</a></li>
 </ul>
 </li>
@@ -126,7 +133,7 @@
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="_sources/user_guide.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/user_guide.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -139,6 +146,16 @@
   <div class="section" id="codatlas-new-user-guide">
 <h1>Codatlas New User Guide<a class="headerlink" href="#codatlas-new-user-guide" title="Permalink to this headline">¶</a></h1>
 <p>This chapter is intended to go through the basics of how to use Codatlas. For the rest of the chapter, <code class="docutils literal"><span class="pre">$HostName</span></code> refers to the public DNS address that has Codatlas installed. For example if you using AWS <code class="docutils literal"><span class="pre">$HostName</span></code> could be <code class="docutils literal"><span class="pre">http://ec2-52-35-135-191.us-west-2.compute.amazonaws.com</span></code></p>
+<div class="section" id="config-to-use-ldap">
+<h2>Config to use LDAP<a class="headerlink" href="#config-to-use-ldap" title="Permalink to this headline">¶</a></h2>
+<p>Codatlas can use LDAP for authentication with some simple configuration. You can configure these options in <code class="docutils literal"><span class="pre">lambdalan-enterprise.conf</span></code> and uncomment the ldap section, as shown below:</p>
+<img alt="_images/ldap_config.png" class="align-center" src="_images/ldap_config.png" />
+<p>Alternatively, you can also setup the LDAP config in <code class="docutils literal"><span class="pre">$HOSTNAME/projects/admin</span></code>, the config set in the webpage will be stored in the databse and overwrite the one in config file.</p>
+<p>Note that as long as <code class="docutils literal"><span class="pre">Provider</span> <span class="pre">URL</span></code> property is non-empty, LDAP log in will be enabled and normal username/password login will be disabled.</p>
+<p>If your company&#8217;s LDAP is using a self-signed CA, Codatlas will need to add the certificate into it&#8217;s JVM truststore to enable SSL authentication. To do this, simply put the certificate the following folder:</p>
+<p><code class="docutils literal"><span class="pre">lambdalab-docker/certs</span></code></p>
+<p>This folder will be mounted into Codatlas container and all the certificate within will be added into Codatlas trustore.</p>
+</div>
 <div class="section" id="create-an-account">
 <h2>Create an Account<a class="headerlink" href="#create-an-account" title="Permalink to this headline">¶</a></h2>
 <p>You can create an account at</p>
@@ -155,11 +172,11 @@
 <p><code class="docutils literal"><span class="pre">http://$HostName/admin/projects</span></code></p>
 <p>Put the git clone address (e.g. <a class="reference external" href="https://github.com/apache/hadoop.git">https://github.com/apache/hadoop.git</a>) into <code class="docutils literal"><span class="pre">Enter</span> <span class="pre">url</span> <span class="pre">here</span></code> text box and click on &#8220;Submit&#8221;. You will see the repo showing up in All projects list.</p>
 </div>
-<div class="section" id="use-github-plugin">
-<h2>Use Github Plugin<a class="headerlink" href="#use-github-plugin" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="install-and-config-plugin">
-<h3>Install and Config Plugin<a class="headerlink" href="#install-and-config-plugin" title="Permalink to this headline">¶</a></h3>
-<p>Codatlas also comes with a Github Chrome plugin allows you to add cross-reference to Github pages.</p>
+<div class="section" id="use-github-gitlab-plugin">
+<h2>Use Github/Gitlab Plugin<a class="headerlink" href="#use-github-gitlab-plugin" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="install-and-config-browser-plugin">
+<h3>Install and Config Browser Plugin<a class="headerlink" href="#install-and-config-browser-plugin" title="Permalink to this headline">¶</a></h3>
+<p>Codatlas also comes with a Github/Gitlab Chrome plugin allows you to add cross-reference to Github/Gitlab pages.</p>
 <p>Before the installation, make sure you can visit</p>
 <p><code class="docutils literal"><span class="pre">http://$HostName</span></code> and login with Github credential.</p>
 <p>To use it, first download Codatlas plugin from:</p>
@@ -173,12 +190,59 @@
 <p>If you see <code class="docutils literal"><span class="pre">Error</span> <span class="pre">connecting</span> <span class="pre">to</span> <span class="pre">server!</span></code>, this means that the plugin can not connect to the server. This can be either due to wrong server address or that you have not made exception for SSL connection to the server.</p>
 <p>If you see <code class="docutils literal"><span class="pre">You</span> <span class="pre">have</span> <span class="pre">not</span> <span class="pre">logged</span> <span class="pre">in</span> <span class="pre">with</span> <span class="pre">Codatlas</span> <span class="pre">and</span> <span class="pre">will</span> <span class="pre">not</span> <span class="pre">have</span> <span class="pre">access</span> <span class="pre">to</span> <span class="pre">your</span> <span class="pre">private</span> <span class="pre">repos</span></code>, this means you can connect to Codatlas server but you are not logged in, which will limit your access to private repos.</p>
 </div>
+<div class="section" id="install-and-config-native-gitlab-plugin">
+<h3>Install and Config Native Gitlab Plugin<a class="headerlink" href="#install-and-config-native-gitlab-plugin" title="Permalink to this headline">¶</a></h3>
+<p>If you are self-hosting Gitlab, Codatlas also provides a native Gitlab Plugin that could add cross-reference to Gitlab page without the requirement of every user to install a Chrome Plugin. The installation requires
+the administrator having direct access to Gitlab deployment.</p>
+<p>First, download the plugin by</p>
+<p><code class="docutils literal"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">https://github.com/lambdalab/plugin.git</span></code></p>
+<p>The repository only contains two javascript files, put the js files under</p>
+<p><code class="docutils literal"><span class="pre">$GITLAB_DIR/public/assets/insightio</span></code></p>
+<p>where <code class="docutils literal"><span class="pre">$GITLAB_DIR</span></code> is your gitlab installation folder. For example for an ubnuntu Omnibus release, the folder path could look like:</p>
+<p><code class="docutils literal"><span class="pre">/opt/gitlab/embedded/service/gitlab-rails</span></code>.</p>
+<p>Then in your <code class="docutils literal"><span class="pre">$GITLAB_DIR/app/views/layouts/_head.html.haml</span></code>, add following line</p>
+<p><code class="docutils literal"><span class="pre">=</span> <span class="pre">javascript_include_tag</span> <span class="pre">'/assets/insightio/plugin.js'</span></code></p>
+<p>after</p>
+<p><code class="docutils literal"><span class="pre">=</span> <span class="pre">javascript_include_tag</span> <span class="pre">&quot;application&quot;</span></code>.</p>
+<p>Finally, we need to config the plugin to work correctly with your Gitlab and Codatas installation.
+Open <code class="docutils literal"><span class="pre">$GITLAB_DIR/public/assets/insightio/plugin.js</span></code> and make change to the configuration section:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">lambdalabConfig</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">url</span><span class="p">:</span> <span class="s2">&quot;http://localhost:9000&quot;</span><span class="p">,</span>
+
+        <span class="n">externalUrl</span><span class="p">:</span> <span class="s2">&quot;https://www.codatlas.com&quot;</span><span class="p">,</span>
+
+        <span class="n">enablePlugin</span><span class="p">:</span> <span class="n">true</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">url</span></code>: the URL of your on-prem Codatlas instance</p>
+<p><code class="docutils literal"><span class="pre">externalUrl</span></code>: The fall-back server the plugin will be used to resolve a node that is not found within your on-prem instance. For example the definition of <code class="docutils literal"><span class="pre">java.lang.String</span></code> may not be found on your on-prem Codatlas instance but will be resolved on www.codatlas.com. Set this to empty if you want to disable this feature</p>
+<p><code class="docutils literal"><span class="pre">enablePlugin</span></code>: Whether you want to enable the plugin by default. When set to false, users have to explicitly attach <code class="docutils literal"><span class="pre">enablePlugin=true</span></code> query parameter in the URL to enable the plugin. When set to true, the plugin is always enabled for all users.</p>
+<p>You could see a demo deployment <a class="reference external" href="http://gitlab.insight.io/zfy0701/pysonar2/blob/master/src/main/java/org/yinwang/pysonar/Analyzer.java">here</a>.</p>
+</div>
+</div>
+<div class="section" id="change-settings-xml-for-maven-project">
+<h2>Change settings.xml for Maven project<a class="headerlink" href="#change-settings-xml-for-maven-project" title="Permalink to this headline">¶</a></h2>
+<p>Sometimes you may be using your own Maven Central server to either speed up dependency download or host your own jars in your enterprise network, and usually this custom Maven Central server address is specified in settings.xml file.</p>
+<p>In order to make user-specified settings.xml visible to Codatlas&#8217;s docker container, you need to mount the file into the container. To do that, open docker-compose.yml (or cn-docker-compose.yml if you use cn-lambda-compose to start the stack) with a text editor, and add the following line under <code class="docutils literal"><span class="pre">services:tools:volumes</span></code> section:</p>
+<p><code class="docutils literal"><span class="pre">$PATH_TO_SETTINGS.xml:/lambda_home/tools/maven/conf/settings.xml</span></code></p>
+<p>where <code class="docutils literal"><span class="pre">$PATH_TO_SETTINGS.xml</span></code> is the absolute path to the settings.xml you want Codatlas to use.</p>
+<img alt="_images/setting_example.png" class="align-center" src="_images/setting_example.png" />
+<p>After the change is applied, refresh docker stack by:</p>
+<p><code class="docutils literal"><span class="pre">./lambda-compose</span> <span class="pre">up</span> <span class="pre">-d</span></code></p>
+</div>
+<div class="section" id="customize-repository-build">
+<h2>Customize Repository Build<a class="headerlink" href="#customize-repository-build" title="Permalink to this headline">¶</a></h2>
+<p>Codatlas is designed to automatically detect build system used for the repository and run default command such as <code class="docutils literal"><span class="pre">mvn</span> <span class="pre">package</span></code> or <code class="docutils literal"><span class="pre">gradle</span> <span class="pre">build</span></code> to kick off the build steps, which should work well for most of the repositories. However in cases such as when the project need to download some dependencies up-front, or when some custom build steps, Codatlas provided config settings to customize build steps.</p>
+<p>To enter the project config page, login with an admin account, go to Admin Console, hover on the project item and click on the config icon, as shown below.</p>
+<img alt="_images/project_config.png" class="align-center" src="_images/project_config.png" />
+<p>There are 3 sections of the build config, namely Checkout, Dependencies and Build. Checkout section will be triggered after the repository is cloned, this section is designed for tasks such as checkout a sub-repo. Dependencies section will be run before the build steps are run, this section is designed for downloading dependencies that are not covered by the build script, such as C++ dependencies or other library usually installed by using apt-get. Build section is designed for control the build steps to replace common ones such as <code class="docutils literal"><span class="pre">mvn</span> <span class="pre">package</span></code> or <code class="docutils literal"><span class="pre">gradle</span> <span class="pre">build</span></code></p>
 </div>
 <div class="section" id="obtain-build-log-from-jenkins">
 <h2>Obtain Build Log from Jenkins<a class="headerlink" href="#obtain-build-log-from-jenkins" title="Permalink to this headline">¶</a></h2>
 <p>Internally Codatlas uses Jenkins to build your project and relies on the build process to perform code analysis. If you see the project does not have any code refernce, chances are there are some issue with the build process. In order to diagnose the issue, you can open a web browser and open Jenkins to obtain the log:</p>
 <p><code class="docutils literal"><span class="pre">http://$HostName:8080</span></code></p>
-<p>Locate the build job on right hand side from <code class="docutils literal"><span class="pre">Build</span> <span class="pre">History</span></code> list, the name of the job will contain the name of the project</p>
+<p>Locate the build job on right hand side from <code class="docutils literal"><span class="pre">Build</span> <span class="pre">History</span></code> list, the name of the job will contain the name of the project. See below image for example.</p>
 <img alt="_images/job_detail.png" class="align-center" src="_images/job_detail.png" />
 <p>Click the latest number as shown in the graph. And then click &#8216;View as plain text&#8217; to get the log file.</p>
 <img alt="_images/job_log.png" class="align-center" src="_images/job_log.png" />

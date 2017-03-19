@@ -1,7 +1,7 @@
 version: '2'
 services:
   db:
-    image: '${REGISTRY}library/mongo:3.2'
+    image: '${REGISTRY}library/mongo:3.4'
     entrypoint:
       - mongod
       - --dbpath
