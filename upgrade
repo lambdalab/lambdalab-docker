@@ -1,0 +1,4 @@
+./lambda-compose pull --ignore-pull-failures
+./lambda-compose -f rm tools
+./lambda-compose up -d
+
