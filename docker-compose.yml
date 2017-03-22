@@ -116,4 +116,3 @@ services:
     depends_on:
       - jenkins
       - metadataservice
-    network_mode: host
