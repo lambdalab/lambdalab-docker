@@ -92,10 +92,12 @@ services:
       - codatlas
     ports:
       - 80:80
+      - 443:443 # only useful if you are using https
     volumes:
       - ./sites-available:/etc/nginx/conf.d
       - ./docs:/lambda_home/docs
       - ./plugins:/lambda_home/plugins
+      - ./certs:/lambda_home/certs
   jenkins:
     image: '${REGISTRY}lambdalab/jenkins:${VERSION}'
     volumes:
