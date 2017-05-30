@@ -13,6 +13,8 @@
 
   
   
+  
+  
 
   
 
@@ -34,7 +36,7 @@
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="Lambdalab-docs 1.0.0 documentation" href="index.html"/>
-        <link rel="prev" title="Codatlas Private Cloud Version Quick Install" href="on_prem_install.html"/> 
+        <link rel="prev" title="Insight.io Private Cloud Version Quick Install" href="on_prem_install.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -43,6 +45,7 @@
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
@@ -83,14 +86,16 @@
           
             
             
-                <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="on_prem_install.html">Codatlas Private Cloud Version Quick Install</a></li>
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="on_prem_install.html">Insight.io Private Cloud Version Quick Install</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Codatlas New User Guide</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#config-to-use-ldap">Config to use LDAP</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#create-an-account">Create an Account</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#add-repository">Add Repository</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#use-github-gitlab-plugin">Use Github/Gitlab Plugin</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#install-and-config-browser-plugin">Install and Config Browser Plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#use-gitlab-plugin">Use Gitlab Plugin</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#install-and-config-native-gitlab-plugin">Install and Config Native Gitlab Plugin</a></li>
 </ul>
 </li>
@@ -111,8 +116,10 @@
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="index_enterprise.html">Lambdalab-docs</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index_enterprise.html">Lambdalab-docs</a>
+        
       </nav>
 
 
@@ -121,23 +128,40 @@
         <div class="rst-content">
           
 
- 
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="index_enterprise.html">Docs</a> &raquo;</li>
-      
-    <li>Codatlas New User Guide</li>
+    
+      <li><a href="index_enterprise.html">Docs</a> &raquo;</li>
+        
+      <li>Codatlas New User Guide</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="_sources/user_guide.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -145,16 +169,16 @@
             
   <div class="section" id="codatlas-new-user-guide">
 <h1>Codatlas New User Guide<a class="headerlink" href="#codatlas-new-user-guide" title="Permalink to this headline">¶</a></h1>
-<p>This chapter is intended to go through the basics of how to use Codatlas. For the rest of the chapter, <code class="docutils literal"><span class="pre">$HostName</span></code> refers to the public DNS address that has Codatlas installed. For example if you using AWS <code class="docutils literal"><span class="pre">$HostName</span></code> could be <code class="docutils literal"><span class="pre">http://ec2-52-35-135-191.us-west-2.compute.amazonaws.com</span></code></p>
+<p>This chapter is intended to go through the basics of how to use Insight.io. For the rest of the chapter, <code class="docutils literal"><span class="pre">$HostName</span></code> refers to the public DNS address that has Insight.io installed. For example if you using AWS <code class="docutils literal"><span class="pre">$HostName</span></code> could be <code class="docutils literal"><span class="pre">http://ec2-52-35-135-191.us-west-2.compute.amazonaws.com</span></code></p>
 <div class="section" id="config-to-use-ldap">
 <h2>Config to use LDAP<a class="headerlink" href="#config-to-use-ldap" title="Permalink to this headline">¶</a></h2>
-<p>Codatlas can use LDAP for authentication with some simple configuration. You can configure these options in <code class="docutils literal"><span class="pre">lambdalan-enterprise.conf</span></code> and uncomment the ldap section, as shown below:</p>
+<p>Insight.io can use LDAP for authentication with some simple configuration. You can configure these options in <code class="docutils literal"><span class="pre">lambdalan-enterprise.conf</span></code> and uncomment the ldap section, as shown below:</p>
 <img alt="_images/ldap_config.png" class="align-center" src="_images/ldap_config.png" />
 <p>Alternatively, you can also setup the LDAP config in <code class="docutils literal"><span class="pre">$HOSTNAME/projects/admin</span></code>, the config set in the webpage will be stored in the databse and overwrite the one in config file.</p>
 <p>Note that as long as <code class="docutils literal"><span class="pre">Provider</span> <span class="pre">URL</span></code> property is non-empty, LDAP log in will be enabled and normal username/password login will be disabled.</p>
-<p>If your company&#8217;s LDAP is using a self-signed CA, Codatlas will need to add the certificate into it&#8217;s JVM truststore to enable SSL authentication. To do this, simply put the certificate the following folder:</p>
+<p>If your company&#8217;s LDAP is using a self-signed CA, Insight.io will need to add the certificate into it&#8217;s JVM truststore to enable SSL authentication. To do this, simply put the certificate the following folder:</p>
 <p><code class="docutils literal"><span class="pre">lambdalab-docker/certs</span></code></p>
-<p>This folder will be mounted into Codatlas container and all the certificate within will be added into Codatlas trustore.</p>
+<p>This folder will be mounted into Insight.io container and all the certificate within will be added into Insight.io trustore.</p>
 </div>
 <div class="section" id="create-an-account">
 <h2>Create an Account<a class="headerlink" href="#create-an-account" title="Permalink to this headline">¶</a></h2>
@@ -165,31 +189,15 @@
 </div>
 <div class="section" id="add-repository">
 <h2>Add Repository<a class="headerlink" href="#add-repository" title="Permalink to this headline">¶</a></h2>
-<p>If you are using Github integration with Codatlas and logged in with your Github account, simply go to</p>
+<p>If you are using Github integration with Insight.io and logged in with your Github account, simply go to</p>
 <p><code class="docutils literal"><span class="pre">http://$HostName/myprojects</span></code></p>
-<p>Click on <code class="docutils literal"><span class="pre">Authorize</span> <span class="pre">Github</span> <span class="pre">Public/Private</span> <span class="pre">Repo</span> <span class="pre">Access</span></code> buttons to grant Codatlas access to the public/private repos under your Github account respectively, after which all your repos should be listed under Repositories. Click on the <code class="docutils literal"><span class="pre">Import</span> <span class="pre">this</span> <span class="pre">repo</span></code> switch for the ones you want to import. This will kick-off the code analysis process.</p>
+<p>Click on <code class="docutils literal"><span class="pre">Authorize</span> <span class="pre">Github</span> <span class="pre">Public/Private</span> <span class="pre">Repo</span> <span class="pre">Access</span></code> buttons to grant Insight.io access to the public/private repos under your Github account respectively, after which all your repos should be listed under Repositories. Click on the <code class="docutils literal"><span class="pre">Import</span> <span class="pre">this</span> <span class="pre">repo</span></code> switch for the ones you want to import. This will kick-off the code analysis process.</p>
 <p>If you are not using Github integration, log in with the account with admin access, and go to:</p>
 <p><code class="docutils literal"><span class="pre">http://$HostName/admin/projects</span></code></p>
 <p>Put the git clone address (e.g. <a class="reference external" href="https://github.com/apache/hadoop.git">https://github.com/apache/hadoop.git</a>) into <code class="docutils literal"><span class="pre">Enter</span> <span class="pre">url</span> <span class="pre">here</span></code> text box and click on &#8220;Submit&#8221;. You will see the repo showing up in All projects list.</p>
 </div>
-<div class="section" id="use-github-gitlab-plugin">
-<h2>Use Github/Gitlab Plugin<a class="headerlink" href="#use-github-gitlab-plugin" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="install-and-config-browser-plugin">
-<h3>Install and Config Browser Plugin<a class="headerlink" href="#install-and-config-browser-plugin" title="Permalink to this headline">¶</a></h3>
-<p>Codatlas also comes with a Github/Gitlab Chrome plugin allows you to add cross-reference to Github/Gitlab pages.</p>
-<p>Before the installation, make sure you can visit</p>
-<p><code class="docutils literal"><span class="pre">http://$HostName</span></code> and login with Github credential.</p>
-<p>To use it, first download Codatlas plugin from:</p>
-<p><code class="docutils literal"><span class="pre">https://chrome.google.com/webstore/detail/codatlas/iaaaofjkoijmkiggkfjepnedghgfllkp</span></code></p>
-<p>Codatlas should show up in your extension list, as showing below:</p>
-<img alt="_images/plugin_installed.png" class="align-center" src="_images/plugin_installed.png" />
-<p>check <code class="docutils literal"><span class="pre">Enabled</span></code> check box and click on <code class="docutils literal"><span class="pre">Options</span></code> page, this should bring up an option window for you to put in the server address. put in <code class="docutils literal"><span class="pre">$HostName</span></code> in <code class="docutils literal"><span class="pre">host</span></code> box and leave <code class="docutils literal"><span class="pre">protocal</span></code> to be <code class="docutils literal"><span class="pre">http</span></code> and <code class="docutils literal"><span class="pre">port</span></code> to be empty. Click on <code class="docutils literal"><span class="pre">Submit</span></code> and wait until the following success message to be shown:</p>
-<p><code class="docutils literal"><span class="pre">You</span> <span class="pre">have</span> <span class="pre">connected</span> <span class="pre">to</span> <span class="pre">the</span> <span class="pre">server</span> <span class="pre">and</span> <span class="pre">logged</span> <span class="pre">in!</span> <span class="pre">Enjoy</span> <span class="pre">code</span> <span class="pre">browsing!</span></code></p>
-<img alt="_images/plugin_succeed.png" class="align-center" src="_images/plugin_succeed.png" />
-<p>If you see some message other success message, here are possible situations:</p>
-<p>If you see <code class="docutils literal"><span class="pre">Error</span> <span class="pre">connecting</span> <span class="pre">to</span> <span class="pre">server!</span></code>, this means that the plugin can not connect to the server. This can be either due to wrong server address or that you have not made exception for SSL connection to the server.</p>
-<p>If you see <code class="docutils literal"><span class="pre">You</span> <span class="pre">have</span> <span class="pre">not</span> <span class="pre">logged</span> <span class="pre">in</span> <span class="pre">with</span> <span class="pre">Codatlas</span> <span class="pre">and</span> <span class="pre">will</span> <span class="pre">not</span> <span class="pre">have</span> <span class="pre">access</span> <span class="pre">to</span> <span class="pre">your</span> <span class="pre">private</span> <span class="pre">repos</span></code>, this means you can connect to Codatlas server but you are not logged in, which will limit your access to private repos.</p>
-</div>
+<div class="section" id="use-gitlab-plugin">
+<h2>Use Gitlab Plugin<a class="headerlink" href="#use-gitlab-plugin" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="install-and-config-native-gitlab-plugin">
 <h3>Install and Config Native Gitlab Plugin<a class="headerlink" href="#install-and-config-native-gitlab-plugin" title="Permalink to this headline">¶</a></h3>
 <p>If you are self-hosting Gitlab, Codatlas also provides a native Gitlab Plugin that could add cross-reference to Gitlab page without the requirement of every user to install a Chrome Plugin. The installation requires
@@ -209,14 +217,14 @@ Open <code class="docutils literal"><span class="pre">$GITLAB_DIR/public/assets/
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">lambdalabConfig</span> <span class="o">=</span> <span class="p">{</span>
         <span class="n">url</span><span class="p">:</span> <span class="s2">&quot;http://localhost:9000&quot;</span><span class="p">,</span>
 
-        <span class="n">externalUrl</span><span class="p">:</span> <span class="s2">&quot;https://www.codatlas.com&quot;</span><span class="p">,</span>
+        <span class="n">externalUrl</span><span class="p">:</span> <span class="s2">&quot;https://insight.io&quot;</span><span class="p">,</span>
 
         <span class="n">enablePlugin</span><span class="p">:</span> <span class="n">true</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <p><code class="docutils literal"><span class="pre">url</span></code>: the URL of your on-prem Codatlas instance</p>
-<p><code class="docutils literal"><span class="pre">externalUrl</span></code>: The fall-back server the plugin will be used to resolve a node that is not found within your on-prem instance. For example the definition of <code class="docutils literal"><span class="pre">java.lang.String</span></code> may not be found on your on-prem Codatlas instance but will be resolved on www.codatlas.com. Set this to empty if you want to disable this feature</p>
+<p><code class="docutils literal"><span class="pre">externalUrl</span></code>: The fall-back server the plugin will be used to resolve a node that is not found within your on-prem instance. For example the definition of <code class="docutils literal"><span class="pre">java.lang.String</span></code> may not be found on your on-prem Codatlas instance but will be resolved on insight.io. Set this to empty if you want to disable this feature</p>
 <p><code class="docutils literal"><span class="pre">enablePlugin</span></code>: Whether you want to enable the plugin by default. When set to false, users have to explicitly attach <code class="docutils literal"><span class="pre">enablePlugin=true</span></code> query parameter in the URL to enable the plugin. When set to true, the plugin is always enabled for all users.</p>
 <p>You could see a demo deployment <a class="reference external" href="http://gitlab.insight.io/zfy0701/pysonar2/blob/master/src/main/java/org/yinwang/pysonar/Analyzer.java">here</a>.</p>
 </div>
@@ -251,13 +259,16 @@ Open <code class="docutils literal"><span class="pre">$GITLAB_DIR/public/assets/
 
 
            </div>
+           <div class="articleComments">
+            
+           </div>
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
       
-        <a href="on_prem_install.html" class="btn btn-neutral" title="Codatlas Private Cloud Version Quick Install" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="on_prem_install.html" class="btn btn-neutral" title="Insight.io Private Cloud Version Quick Install" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -291,13 +302,14 @@ Open <code class="docutils literal"><span class="pre">$GITLAB_DIR/public/assets/
             VERSION:'1.0.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

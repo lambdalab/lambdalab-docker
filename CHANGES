@@ -1,3 +1,15 @@
+0.4.8
+Improved C++ support
+Bug fixes
+
+0.4.7
+Support multi node selection
+New UI
+Bug fixes
+
+0.4.6
+Improve PHP analysis performance
+
 0.4.5
 Add token based authentication
 Improve builder inference

@@ -13,6 +13,8 @@
 
   
   
+  
+  
 
   
 
@@ -34,7 +36,7 @@
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="Lambdalab-docs 1.0.0 documentation" href="index.html"/>
-        <link rel="next" title="Codatlas Private Cloud Version Quick Install" href="on_prem_install.html"/> 
+        <link rel="next" title="Insight.io Private Cloud Version Quick Install" href="on_prem_install.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -43,6 +45,7 @@
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
@@ -83,8 +86,11 @@
           
             
             
-                <ul>
-<li class="toctree-l1"><a class="reference internal" href="on_prem_install.html">Codatlas Private Cloud Version Quick Install</a></li>
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="on_prem_install.html">Insight.io Private Cloud Version Quick Install</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user_guide.html">Codatlas New User Guide</a></li>
 </ul>
 
@@ -98,8 +104,10 @@
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="#">Lambdalab-docs</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">Lambdalab-docs</a>
+        
       </nav>
 
 
@@ -108,23 +116,40 @@
         <div class="rst-content">
           
 
- 
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="#">Docs</a> &raquo;</li>
-      
-    <li>Lambdalab software documentation</li>
+    
+      <li><a href="#">Docs</a> &raquo;</li>
+        
+      <li>Lambdalab software documentation</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="_sources/index_enterprise.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -135,7 +160,7 @@
 <p>Contents:</p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="on_prem_install.html">Codatlas Private Cloud Version Quick Install</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="on_prem_install.html">Insight.io Private Cloud Version Quick Install</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="on_prem_install.html#intro">Intro</a></li>
 <li class="toctree-l2"><a class="reference internal" href="on_prem_install.html#prerequisites">Prerequisites</a></li>
 <li class="toctree-l2"><a class="reference internal" href="on_prem_install.html#install-docker-and-docker-compose">Install Docker and Docker Compose</a></li>
@@ -143,8 +168,9 @@
 <li class="toctree-l2"><a class="reference internal" href="on_prem_install.html#clone-git-repo-for-docker-compose">Clone Git Repo for Docker Compose</a></li>
 <li class="toctree-l2"><a class="reference internal" href="on_prem_install.html#download-docker-image-and-start-docker-services">Download Docker Image and Start Docker Services</a></li>
 <li class="toctree-l2"><a class="reference internal" href="on_prem_install.html#configure-github-integration">Configure Github Integration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="on_prem_install.html#upgrade-codatlas">Upgrade Codatlas</a></li>
-<li class="toctree-l2"><a class="reference internal" href="on_prem_install.html#deploy-codatlas-with-multiple-machines">Deploy Codatlas with Multiple Machines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="on_prem_install.html#configure-gitlab-integration">Configure Gitlab Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="on_prem_install.html#upgrade-insight-io">Upgrade Insight.io</a></li>
+<li class="toctree-l2"><a class="reference internal" href="on_prem_install.html#deploy-insight-io-with-multiple-machines">Deploy Insight.io with Multiple Machines</a></li>
 <li class="toctree-l2"><a class="reference internal" href="on_prem_install.html#common-process-management-with-docker-compose">Common Process Management with Docker Compose</a></li>
 </ul>
 </li>
@@ -152,7 +178,7 @@
 <li class="toctree-l2"><a class="reference internal" href="user_guide.html#config-to-use-ldap">Config to use LDAP</a></li>
 <li class="toctree-l2"><a class="reference internal" href="user_guide.html#create-an-account">Create an Account</a></li>
 <li class="toctree-l2"><a class="reference internal" href="user_guide.html#add-repository">Add Repository</a></li>
-<li class="toctree-l2"><a class="reference internal" href="user_guide.html#use-github-gitlab-plugin">Use Github/Gitlab Plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide.html#use-gitlab-plugin">Use Gitlab Plugin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="user_guide.html#change-settings-xml-for-maven-project">Change settings.xml for Maven project</a></li>
 <li class="toctree-l2"><a class="reference internal" href="user_guide.html#customize-repository-build">Customize Repository Build</a></li>
 <li class="toctree-l2"><a class="reference internal" href="user_guide.html#obtain-build-log-from-jenkins">Obtain Build Log from Jenkins</a></li>
@@ -164,12 +190,15 @@
 
 
            </div>
+           <div class="articleComments">
+            
+           </div>
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="on_prem_install.html" class="btn btn-neutral float-right" title="Codatlas Private Cloud Version Quick Install" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="on_prem_install.html" class="btn btn-neutral float-right" title="Insight.io Private Cloud Version Quick Install" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
     </div>
@@ -204,13 +233,14 @@
             VERSION:'1.0.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 
