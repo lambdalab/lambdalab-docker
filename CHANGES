@@ -1,12 +1,15 @@
+0.4.12
+Enable Kerbroes authentication
+Be able to use API token to do API query
+Provide APIs to
+ Import project
+ Manually update projects
+ Push project permission
+
 0.4.10
-Analyzer fixes
 Visualization improvements
-
-0.4.9
 Add basic project callstack visualization
-
-0.4.8
-Improved C++ support
+Improved C++/PHP support
 Bug fixes
 
 0.4.7
