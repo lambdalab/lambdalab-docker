@@ -40,6 +40,9 @@ services:
       - ./logs:/lambda_home/logs
       - ./configs:/lambda_home/configs
       - ~/.ssh:/root/.ssh
+      - /etc/krb5.conf:/etc/krb5.conf
+      - ./jaas.conf:/etc/jaas.conf
+      - /tmp/krb5cc_0:/tmp/krb5cc_0
     ports:
       - 10020:10020
       - 9418:9418
