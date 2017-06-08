@@ -20,6 +20,6 @@ else
   fi
 fi
 
-docker-compose build --pull jenkins-slave
+# docker-compose build --pull jenkins-slave
 docker-compose $@
 

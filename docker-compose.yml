@@ -111,7 +111,7 @@ services:
   jenkins-slave:
     build:
       context: ./tools/${REGISTRY}
-    image: local/tools
+    image: 'local/tools:${VERSION}'
     environment:
       - JENKINS_MASTER=http://jenkins:8080
       - EXECUTOR_NUM=4
