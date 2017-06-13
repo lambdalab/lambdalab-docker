@@ -1,0 +1,109 @@
+version: '2'
+services:
+  db:
+    image: '${REGISTRY}library/mongo:3.4'
+    entrypoint:
+      - mongod
+      - --dbpath
+      - /data/db
+      - --logpath
+      - /logs/mongo.log
+      - --httpinterface
+      - --rest
+      - --setParameter
+      - failIndexKeyTooLong=false
+    volumes:
+      - ./data/mongodb/db:/data/db
+      - ./logs/mongodb:/logs
+    ports:
+      - 27017:27017 # TODO hide this port in the future
+      - 28017:28017
+  redis: # TODO mount redis disk volume
+    image: '${REGISTRY}library/redis:3.2'
+    command:
+      - --bind 0.0.0.0
+  elasticsearch:
+    image: '${REGISTRY}lambdalab/elasticsearch:${VERSION}'
+    volumes:
+      - ./data/elasticsearch:/lambda_home/data/elasticsearch
+      - ./configs:/lambda_home/configs
+      - ./logs/elasticsearch:/lambda_home/data/logs
+    ports:
+      - 9200:9200
+      - 9300:9300
+  dataservice:
+    image: '${REGISTRY}lambdalab/dataservice:${VERSION}'
+    volumes:
+      - ./data/projects:/lambda_home/data/projects
+      - ./logs:/lambda_home/logs
+      - ./configs:/lambda_home/configs
+      - ~/.ssh:/root/.ssh
+      - /etc/krb5.conf:/etc/krb5.conf
+      - ./jaas.conf:/etc/jaas.conf
+      - /tmp/krb5cc_0:/tmp/krb5cc_0
+    ports:
+      - 10020:10020
+      - 9418:9418
+  projectservice:
+    image: '${REGISTRY}lambdalab/projectservice:${VERSION}'
+    volumes:
+      - ./data/projects:/lambda_home/data/projects
+      - ./logs:/lambda_home/logs
+      - ./configs:/lambda_home/configs
+  liaceservice:
+    image: '${REGISTRY}lambdalab/liaceservice:${VERSION}'
+    volumes:
+      - ./configs:/lambda_home/configs
+      - ./logs:/lambda_home/logs
+  metadataservice:
+    image: '${REGISTRY}lambdalab/metadataservice:${VERSION}'
+    volumes:
+      - ./configs:/lambda_home/configs
+      - ./logs:/lambda_home/logs
+    ports:
+      - 10060:10060
+  pygments:
+    image: '${REGISTRY}lambdalab/pygments:${VERSION}'
+    volumes:
+      - ./configs:/lambda_home/configs
+      - ./logs:/lambda_home/logs
+  codatlas:
+    image: '${REGISTRY}lambdalab/codatlas:${VERSION}'
+    volumes:
+      - ./configs:/lambda_home/configs
+      - ./logs:/lambda_home/logs
+      - ./certs:/lambda_home/certs
+    ports:
+      - 9000:9000
+  nginx:
+    image: '${REGISTRY}library/nginx:1.10'
+    depends_on:
+      - codatlas
+    ports:
+      - 80:80
+      - 443:443 # only useful if you are using https
+    volumes:
+      - ./sites-available:/etc/nginx/conf.d
+      - ./docs:/lambda_home/docs
+      - ./plugins:/lambda_home/plugins
+      - ./certs:/lambda_home/certs
+  jenkins:
+    image: '${REGISTRY}lambdalab/jenkins:${VERSION}'
+    volumes:
+      - ./data/jenkins_home:/var/jenkins_home
+    ports:
+      - 8080:8080
+      - 50000:50000
+  jenkins-slave:
+    build:
+      context: ./tools/${REGISTRY}
+    image: 'local/tools:${VERSION}'
+    environment:
+      - JENKINS_MASTER=http://jenkins:8080
+      - EXECUTOR_NUM=4
+    volumes:
+      - ./android-sdk-linux:/lambda_home/tools/android-sdk
+      - ./data/jenkins_slave_home:/home/jenkins
+    depends_on:
+      - jenkins
+      - metadataservice

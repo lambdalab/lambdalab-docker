@@ -1,3 +1,8 @@
+0.4.16
+Use finagle redis client to replace jedis
+Visualization improvement
+Markdown Readme support
+
 0.4.15
 Enable Kerbroes authentication
 Be able to use API token to do API query

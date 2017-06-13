@@ -200,84 +200,6 @@ Access ``$Hostname/api/createApiToken`` in your browser and you should be able t
 
 You can copy this token for later usage. If you want to find all previous created tokens, please refer to **List All Tokens** section below.
 
-
-Creation before Authentication
-++++++++++++++++++++++++++++++
-
-You can also create an api access token without manually login.
-This is mostly useful for interact with Insight.io programmatically.
-Depends on how do you authenticate with Insight.io, the usage also varies.
-
-
-1) Username/Password
-********************
-
-If you have normal username/password account, simply `POST` your username and password to `/api/authenticate/userpass`
-to authenticate your account and this will generate a new access token to you.
-
-``POST  /api/authenticate/userpass``
-
-
-**Usage**
-
-``curl -i --data "username=<your username>&password=<your password>" <host>/api/authenticate/userpass``
-
-**Response**
-
-::
-
-  HTTP/1.1 200 OK
-  {
-    "token":"961bb2a95e2184a97729398f39c2090b404c07d98cfda7fee6f7d1349d7c6b3577321b49ae920bb1cb4fb30862eb2d7583766a01df6680ffff0094cade160dfa04bce5e0d3fa7e2b43bd5371d1a0ab3b79bba592dbfc5f51dc75871ed4212d2549eac819a51beeaf588fb5e5d00d6241182264240f9c370e960f954a014889c0",
-    "expiresOn":"292278994-08-17T07:12:55.807Z"
-  }
-
-2) LDAP
-*******
-
-Similar to use username and password, `POST` your LDAP username and password to `/api/authenticate/ldap` instead, without
-the need to register on Insight.io before.
-
-``POST /api/authenticate/ldap``
-
-**Usage**
-
-``curl -i --data "username=<your ldap username>&password=<your password>" <host>/api/authenticate/ldap``
-
-3) OAuth
-********
-
-To create api access token with a third party OAuth service, `POST` your OAuth information to `/api/authenticate/<provider>` with the following **json** body:
-
-``POST /api/authenticate/<provider>``
-
-::
-
-  {
-    "email": "<your email address>",
-    "info": {
-      "accessToken": "<your OAuth token>"
-    }
-  }
-
-**Usage**
-
-Take Github as an example:
-
-``curl -i --header "Content-Type: application/json" --data "{'email':'<your email>', 'info': { 'accessToken': '<your OAuth token>' }}" <host>/api/authenticate/github``
-
-**Response**
-
-You will get response as below if authenticate successfully
-
-::
-
-  HTTP/1.1 200 OK
-  {
-    "token":"961bb2a95e2184a97729398f39c2090b404c07d98cfda7fee6f7d1349d7c6b3577321b49ae920bb1cb4fb30862eb2d7583766a01df6680ffff0094cade160dfa04bce5e0d3fa7e2b43bd5371d1a0ab3b79bba592dbfc5f51dc75871ed4212d2549eac819a51beeaf588fb5e5d00d6241182264240f9c370e960f954a014889c0",
-    "expiresOn":"292278994-08-17T07:12:55.807Z"
-  }
-
 Token Usage
 ~~~~~~~~~~~
 
@@ -372,8 +294,11 @@ most recently.
 Import Projects
 ---------------
 
-Import Project via Git Urls
+Import Projects via Git Urls
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Via UI
+++++++++++++++++++++++++++
 
 To import a batch of project at a time, go to your `Admin Console` and click the `Import New Repo` button
 on the top right.
@@ -393,8 +318,38 @@ with this option opted in, your repository will only be accessible to a limited 
 * **Enable Manual Update**: By default, Insight.io periodically pull updates from remote for all the projects, with this
 setting enabled, your repository won't be updated automatically. See details in the next section.
 
+Via API
+++++++++++++++++++++++++++
+
+Instead of import projects in UI, you can also achieve this by using our REST API.
+
+``POST /api/admin/projects``
+
+Set ``Content-Type`` to ``application/json`` and ``POST`` with body:
+::
+
+  {
+    "urls":"https://github.com/apache/sqoop.git\nhttps://github.com/apache/hadoop.git",  // The urls of the repositories you wish to add. Seperate by '\n' for multiple urls.
+    "isPrivate":false,  // Set all the repositories to be private repositories or not.
+    "enableManualUpdate":false  // Set all the repositories to be updated manually or not.
+  }
+
+Note that this API requires admin priviledge to call.
+
+Find Project via Url
+--------------------
+
+You can also check if a repo has been imported or not by using following API
+
+``GET /api/admin/findProject?url=$repoUrl``
+
+Note that ``repoUrl`` must be encoded as valid URL component.
+
+This API will return a project information if the project is existed. ``response.id`` is the **Project ID** we used for other API access.
+It will return 404 if the repo hasn't been imported.
+
 Configure Manual Update
-~~~~~~~~~~~~~~~~~~~~~~~
+--------------------
 
 By default, Insight.io periodically pull updates of all projects from remote. We provide 2 levels of configurations
 to disable auto update in **System** and **Project** levels.
@@ -406,9 +361,8 @@ To enable repository manual update for the entire system, add the following conf
 
 ::
 
-  projectservice: {
-    enableManualUpdate: true
-  }
+  projectservice.enableManualUpdate: true
+
 
 You need to restart the stack to apply this change. This configuration is honored with higer priority than project level
 manual update, i.e., when system level manual update is enabled, even disable the manual update
@@ -443,7 +397,7 @@ Be aware that you have to authenticate before you can successfully call this API
 ``curl -i --header "X-Auth-Token:<your access token>" <host>/api/updateProject/github.com/apache/hadoop``
 
 Switch a Repo from Public to Private
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+--------------------
 If you want to switch an already imported public repo to private, you can do so by calling the following API:
 
 ``POST /api/switchRepoToPrivate/<projectId>``
@@ -452,13 +406,26 @@ Note that this API requires admin priviledge to call.
 
 After a repo is switched to private, only admin has access to it by default, you may need to push access setting for the private repo to control how it can be accessed by other users.
 
-Push User Access throught API
+Configure manual user permission management
+--------------------
+By default, the system try to sync permission from github / gitlab. If we need to manually manage all the permission, we need to do the following
+
+Disable permission sync
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Add the following configuration to ``lambdalan-enterprise.conf``.
+
+::
+
+  codatlas.enableManualAccessControl: true
+
+
+Push User Access though API
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 You can update access of a user by calling the following API:
 
 ``POST /api/admin/pushUserAccess``
 
-And the parameters required are as follows:
+Set ``Content-Type`` to ``application/json`` and ``POST`` with body:
 ::
   {
     "userId":"testuser",  // userId of the user
@@ -466,4 +433,10 @@ And the parameters required are as follows:
     "projectIds" : ["github.com/apache/sqoop", "github.com/dmlc/dmlc-core"] //projectIds of the repos the user can access
   }
 
-Note that this API requires admin priviledge to call.
+Where userId is the id that is used for login, providerId is the type of the login,
+* if the user is configured to login with github, then providerId is "github",
+* if the user is configured to login with ldap, then providerId should be "ldap",
+* if the user is configured to login with normal username / password, then the providerId should be "userpass"
+
+Note that this API requires admin priviledge to call, and this API only works when github or gitlab integration is not configured
+for the system

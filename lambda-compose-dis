@@ -1,0 +1,23 @@
+#!/bin/bash
+
+abs_path () {
+    path=`cd "$1"; pwd`
+    echo "$path"
+}
+
+export SCRIPT_DIR=$(abs_path $(dirname $0))
+
+cd $SCRIPT_DIR
+
+export REGISTRY=${REGISTRY:=''}
+
+if [ $(uname) = 'Darwin' ]; then
+  echo "You are using mac os which is not officially supported for product use"
+else
+  if [ $(sysctl -n vm.max_map_count) -lt 262144 ]; then
+    echo "vm.max_map_count size to low, increasing to 262144"
+    sudo sysctl -w vm.max_map_count=262144
+  fi
+fi
+
+docker-compose -f docker-compose-distributed.yml $@

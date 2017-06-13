@@ -105,7 +105,6 @@
 <li class="toctree-l2"><a class="reference internal" href="#use-api-access-token">Use Api Access Token</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#token-creation">Token Creation</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#creation-after-authentication">Creation after Authentication</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#creation-before-authentication">Creation before Authentication</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#token-usage">Token Usage</a></li>
@@ -114,15 +113,22 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#import-projects">Import Projects</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#import-project-via-git-urls">Import Project via Git Urls</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#configure-manual-update">Configure Manual Update</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#system-level-manual-update">System Level Manual Update</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#project-level-manual-update">Project Level Manual Update</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#import-projects-via-git-urls">Import Projects via Git Urls</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#via-ui">Via UI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#via-api">Via API</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#find-project-via-url">Find Project via Url</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configure-manual-update">Configure Manual Update</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#trigger-manual-update">Trigger Manual Update</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#switch-a-repo-from-public-to-private">Switch a Repo from Public to Private</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#push-user-access-throught-api">Push User Access throught API</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#switch-a-repo-from-public-to-private">Switch a Repo from Public to Private</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configure-manual-user-permission-management">Configure manual user permission management</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#disable-permission-sync">Disable permission sync</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#push-user-access-though-api">Push User Access though API</a></li>
 </ul>
 </li>
 </ul>
@@ -293,63 +299,8 @@ generate a new token and return it to you.</p>
 <p><code class="docutils literal"><span class="pre">GET</span> <span class="pre">/api/createApiToken</span></code></p>
 <p><strong>Usage</strong></p>
 <p>Access <code class="docutils literal"><span class="pre">$Hostname/api/createApiToken</span></code> in your browser and you should be able to generate a new api token.</p>
-<img alt="images/create_api_token.png" class="align-center" src="images/create_api_token.png" />
+<img alt="_images/create_api_token.png" class="align-center" src="_images/create_api_token.png" />
 <p>You can copy this token for later usage. If you want to find all previous created tokens, please refer to <strong>List All Tokens</strong> section below.</p>
-</div>
-<div class="section" id="creation-before-authentication">
-<h4>Creation before Authentication<a class="headerlink" href="#creation-before-authentication" title="Permalink to this headline">¶</a></h4>
-<p>You can also create an api access token without manually login.
-This is mostly useful for interact with Insight.io programmatically.
-Depends on how do you authenticate with Insight.io, the usage also varies.</p>
-<div class="section" id="username-password">
-<h5>1) Username/Password<a class="headerlink" href="#username-password" title="Permalink to this headline">¶</a></h5>
-<p>If you have normal username/password account, simply <cite>POST</cite> your username and password to <cite>/api/authenticate/userpass</cite>
-to authenticate your account and this will generate a new access token to you.</p>
-<p><code class="docutils literal"><span class="pre">POST</span>&#160; <span class="pre">/api/authenticate/userpass</span></code></p>
-<p><strong>Usage</strong></p>
-<p><code class="docutils literal"><span class="pre">curl</span> <span class="pre">-i</span> <span class="pre">--data</span> <span class="pre">&quot;username=&lt;your</span> <span class="pre">username&gt;&amp;password=&lt;your</span> <span class="pre">password&gt;&quot;</span> <span class="pre">&lt;host&gt;/api/authenticate/userpass</span></code></p>
-<p><strong>Response</strong></p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">HTTP</span><span class="o">/</span><span class="mf">1.1</span> <span class="mi">200</span> <span class="n">OK</span>
-<span class="p">{</span>
-  <span class="s2">&quot;token&quot;</span><span class="p">:</span><span class="s2">&quot;961bb2a95e2184a97729398f39c2090b404c07d98cfda7fee6f7d1349d7c6b3577321b49ae920bb1cb4fb30862eb2d7583766a01df6680ffff0094cade160dfa04bce5e0d3fa7e2b43bd5371d1a0ab3b79bba592dbfc5f51dc75871ed4212d2549eac819a51beeaf588fb5e5d00d6241182264240f9c370e960f954a014889c0&quot;</span><span class="p">,</span>
-  <span class="s2">&quot;expiresOn&quot;</span><span class="p">:</span><span class="s2">&quot;292278994-08-17T07:12:55.807Z&quot;</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="ldap">
-<h5>2) LDAP<a class="headerlink" href="#ldap" title="Permalink to this headline">¶</a></h5>
-<p>Similar to use username and password, <cite>POST</cite> your LDAP username and password to <cite>/api/authenticate/ldap</cite> instead, without
-the need to register on Insight.io before.</p>
-<p><code class="docutils literal"><span class="pre">POST</span> <span class="pre">/api/authenticate/ldap</span></code></p>
-<p><strong>Usage</strong></p>
-<p><code class="docutils literal"><span class="pre">curl</span> <span class="pre">-i</span> <span class="pre">--data</span> <span class="pre">&quot;username=&lt;your</span> <span class="pre">ldap</span> <span class="pre">username&gt;&amp;password=&lt;your</span> <span class="pre">password&gt;&quot;</span> <span class="pre">&lt;host&gt;/api/authenticate/ldap</span></code></p>
-</div>
-<div class="section" id="oauth">
-<h5>3) OAuth<a class="headerlink" href="#oauth" title="Permalink to this headline">¶</a></h5>
-<p>To create api access token with a third party OAuth service, <cite>POST</cite> your OAuth information to <cite>/api/authenticate/&lt;provider&gt;</cite> with the following <strong>json</strong> body:</p>
-<p><code class="docutils literal"><span class="pre">POST</span> <span class="pre">/api/authenticate/&lt;provider&gt;</span></code></p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;your email address&gt;&quot;</span><span class="p">,</span>
-  <span class="s2">&quot;info&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="s2">&quot;accessToken&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;your OAuth token&gt;&quot;</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p><strong>Usage</strong></p>
-<p>Take Github as an example:</p>
-<p><code class="docutils literal"><span class="pre">curl</span> <span class="pre">-i</span> <span class="pre">--header</span> <span class="pre">&quot;Content-Type:</span> <span class="pre">application/json&quot;</span> <span class="pre">--data</span> <span class="pre">&quot;{'email':'&lt;your</span> <span class="pre">email&gt;',</span> <span class="pre">'info':</span> <span class="pre">{</span> <span class="pre">'accessToken':</span> <span class="pre">'&lt;your</span> <span class="pre">OAuth</span> <span class="pre">token&gt;'</span> <span class="pre">}}&quot;</span> <span class="pre">&lt;host&gt;/api/authenticate/github</span></code></p>
-<p><strong>Response</strong></p>
-<p>You will get response as below if authenticate successfully</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">HTTP</span><span class="o">/</span><span class="mf">1.1</span> <span class="mi">200</span> <span class="n">OK</span>
-<span class="p">{</span>
-  <span class="s2">&quot;token&quot;</span><span class="p">:</span><span class="s2">&quot;961bb2a95e2184a97729398f39c2090b404c07d98cfda7fee6f7d1349d7c6b3577321b49ae920bb1cb4fb30862eb2d7583766a01df6680ffff0094cade160dfa04bce5e0d3fa7e2b43bd5371d1a0ab3b79bba592dbfc5f51dc75871ed4212d2549eac819a51beeaf588fb5e5d00d6241182264240f9c370e960f954a014889c0&quot;</span><span class="p">,</span>
-  <span class="s2">&quot;expiresOn&quot;</span><span class="p">:</span><span class="s2">&quot;292278994-08-17T07:12:55.807Z&quot;</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</div>
 </div>
 </div>
 <div class="section" id="token-usage">
@@ -425,8 +376,10 @@ most recently.</p>
 </div>
 <div class="section" id="import-projects">
 <h2>Import Projects<a class="headerlink" href="#import-projects" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="import-project-via-git-urls">
-<h3>Import Project via Git Urls<a class="headerlink" href="#import-project-via-git-urls" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="import-projects-via-git-urls">
+<h3>Import Projects via Git Urls<a class="headerlink" href="#import-projects-via-git-urls" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="via-ui">
+<h4>Via UI<a class="headerlink" href="#via-ui" title="Permalink to this headline">¶</a></h4>
 <p>To import a batch of project at a time, go to your <cite>Admin Console</cite> and click the <cite>Import New Repo</cite> button
 on the top right.</p>
 <p>In the popped out modal, you can put multiple git urls into the input box, one url each line.</p>
@@ -442,31 +395,46 @@ the imported projects.</p>
 </ul>
 <p>setting enabled, your repository won&#8217;t be updated automatically. See details in the next section.</p>
 </div>
+<div class="section" id="via-api">
+<h4>Via API<a class="headerlink" href="#via-api" title="Permalink to this headline">¶</a></h4>
+<p>Instead of import projects in UI, you can also achieve this by using our REST API.</p>
+<p><code class="docutils literal"><span class="pre">POST</span> <span class="pre">/api/admin/projects</span></code></p>
+<p>Set <code class="docutils literal"><span class="pre">Content-Type</span></code> to <code class="docutils literal"><span class="pre">application/json</span></code> and <code class="docutils literal"><span class="pre">POST</span></code> with body:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;urls&quot;</span><span class="p">:</span><span class="s2">&quot;https://github.com/apache/sqoop.git</span><span class="se">\n</span><span class="s2">https://github.com/apache/hadoop.git&quot;</span><span class="p">,</span>  <span class="o">//</span> <span class="n">The</span> <span class="n">urls</span> <span class="n">of</span> <span class="n">the</span> <span class="n">repositories</span> <span class="n">you</span> <span class="n">wish</span> <span class="n">to</span> <span class="n">add</span><span class="o">.</span> <span class="n">Seperate</span> <span class="n">by</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">multiple</span> <span class="n">urls</span><span class="o">.</span>
+  <span class="s2">&quot;isPrivate&quot;</span><span class="p">:</span><span class="n">false</span><span class="p">,</span>  <span class="o">//</span> <span class="n">Set</span> <span class="nb">all</span> <span class="n">the</span> <span class="n">repositories</span> <span class="n">to</span> <span class="n">be</span> <span class="n">private</span> <span class="n">repositories</span> <span class="ow">or</span> <span class="ow">not</span><span class="o">.</span>
+  <span class="s2">&quot;enableManualUpdate&quot;</span><span class="p">:</span><span class="n">false</span>  <span class="o">//</span> <span class="n">Set</span> <span class="nb">all</span> <span class="n">the</span> <span class="n">repositories</span> <span class="n">to</span> <span class="n">be</span> <span class="n">updated</span> <span class="n">manually</span> <span class="ow">or</span> <span class="ow">not</span><span class="o">.</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Note that this API requires admin priviledge to call.</p>
+</div>
+</div>
+</div>
+<div class="section" id="find-project-via-url">
+<h2>Find Project via Url<a class="headerlink" href="#find-project-via-url" title="Permalink to this headline">¶</a></h2>
+<p>You can also check if a repo has been imported or not by using following API</p>
+<p><code class="docutils literal"><span class="pre">GET</span> <span class="pre">/api/admin/findProject?url=$repoUrl</span></code></p>
+<p>Note that <code class="docutils literal"><span class="pre">repoUrl</span></code> must be encoded as valid URL component.</p>
+<p>This API will return a project information if the project is existed. <code class="docutils literal"><span class="pre">response.id</span></code> is the <strong>Project ID</strong> we used for other API access.
+It will return 404 if the repo hasn&#8217;t been imported.</p>
+</div>
 <div class="section" id="configure-manual-update">
-<h3>Configure Manual Update<a class="headerlink" href="#configure-manual-update" title="Permalink to this headline">¶</a></h3>
+<h2>Configure Manual Update<a class="headerlink" href="#configure-manual-update" title="Permalink to this headline">¶</a></h2>
 <p>By default, Insight.io periodically pull updates of all projects from remote. We provide 2 levels of configurations
 to disable auto update in <strong>System</strong> and <strong>Project</strong> levels.</p>
-<div class="section" id="system-level-manual-update">
-<h4>System Level Manual Update<a class="headerlink" href="#system-level-manual-update" title="Permalink to this headline">¶</a></h4>
 <p>To enable repository manual update for the entire system, add the following configuration to <code class="docutils literal"><span class="pre">lambdalan-enterprise.conf</span></code>.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">projectservice</span><span class="p">:</span> <span class="p">{</span>
-  <span class="n">enableManualUpdate</span><span class="p">:</span> <span class="n">true</span>
-<span class="p">}</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">projectservice</span><span class="o">.</span><span class="n">enableManualUpdate</span><span class="p">:</span> <span class="n">true</span>
 </pre></div>
 </div>
 <p>You need to restart the stack to apply this change. This configuration is honored with higer priority than project level
 manual update, i.e., when system level manual update is enabled, even disable the manual update
 for a single repository won&#8217;t work.</p>
-</div>
-<div class="section" id="project-level-manual-update">
-<h4>Project Level Manual Update<a class="headerlink" href="#project-level-manual-update" title="Permalink to this headline">¶</a></h4>
 <p>As mentioned earlier in this doc, you can opt in manual repository update when your first import the project.
 If you did not do that, you can also change the setting in the project configuration modal page.</p>
 <img alt="_images/manual_update_project.png" class="align-center" src="_images/manual_update_project.png" />
 <p>By toggling the switcher on the top and hit <cite>Update</cite> button on the bottom, you can flip the configurations of manual update
 for this particular repository.</p>
-</div>
-</div>
 <div class="section" id="trigger-manual-update">
 <h3>Trigger Manual Update<a class="headerlink" href="#trigger-manual-update" title="Permalink to this headline">¶</a></h3>
 <p>Let&#8217;s assume you have already, either enabled the manual update for the entire system, or for a specific repository. Then
@@ -477,18 +445,29 @@ to trigger an update for a given repository, <cite>GET</cite> <cite>/api/updateP
 <p><strong>Usage</strong></p>
 <p><code class="docutils literal"><span class="pre">curl</span> <span class="pre">-i</span> <span class="pre">--header</span> <span class="pre">&quot;X-Auth-Token:&lt;your</span> <span class="pre">access</span> <span class="pre">token&gt;&quot;</span> <span class="pre">&lt;host&gt;/api/updateProject/github.com/apache/hadoop</span></code></p>
 </div>
+</div>
 <div class="section" id="switch-a-repo-from-public-to-private">
-<h3>Switch a Repo from Public to Private<a class="headerlink" href="#switch-a-repo-from-public-to-private" title="Permalink to this headline">¶</a></h3>
+<h2>Switch a Repo from Public to Private<a class="headerlink" href="#switch-a-repo-from-public-to-private" title="Permalink to this headline">¶</a></h2>
 <p>If you want to switch an already imported public repo to private, you can do so by calling the following API:</p>
 <p><code class="docutils literal"><span class="pre">POST</span> <span class="pre">/api/switchRepoToPrivate/&lt;projectId&gt;</span></code></p>
 <p>Note that this API requires admin priviledge to call.</p>
 <p>After a repo is switched to private, only admin has access to it by default, you may need to push access setting for the private repo to control how it can be accessed by other users.</p>
 </div>
-<div class="section" id="push-user-access-throught-api">
-<h3>Push User Access throught API<a class="headerlink" href="#push-user-access-throught-api" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="configure-manual-user-permission-management">
+<h2>Configure manual user permission management<a class="headerlink" href="#configure-manual-user-permission-management" title="Permalink to this headline">¶</a></h2>
+<p>By default, the system try to sync permission from github / gitlab. If we need to manually manage all the permission, we need to do the following</p>
+<div class="section" id="disable-permission-sync">
+<h3>Disable permission sync<a class="headerlink" href="#disable-permission-sync" title="Permalink to this headline">¶</a></h3>
+<p>Add the following configuration to <code class="docutils literal"><span class="pre">lambdalan-enterprise.conf</span></code>.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">codatlas</span><span class="o">.</span><span class="n">enableManualAccessControl</span><span class="p">:</span> <span class="n">true</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="push-user-access-though-api">
+<h3>Push User Access though API<a class="headerlink" href="#push-user-access-though-api" title="Permalink to this headline">¶</a></h3>
 <p>You can update access of a user by calling the following API:</p>
 <p><code class="docutils literal"><span class="pre">POST</span> <span class="pre">/api/admin/pushUserAccess</span></code></p>
-<p>And the parameters required are as follows:</p>
+<p>Set <code class="docutils literal"><span class="pre">Content-Type</span></code> to <code class="docutils literal"><span class="pre">application/json</span></code> and <code class="docutils literal"><span class="pre">POST</span></code> with body:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="s2">&quot;userId&quot;</span><span class="p">:</span><span class="s2">&quot;testuser&quot;</span><span class="p">,</span>  <span class="o">//</span> <span class="n">userId</span> <span class="n">of</span> <span class="n">the</span> <span class="n">user</span>
   <span class="s2">&quot;providerId&quot;</span><span class="p">:</span><span class="s2">&quot;gitlab&quot;</span><span class="p">,</span> <span class="o">//</span> <span class="n">providerId</span> <span class="n">of</span> <span class="n">the</span> <span class="n">user</span>
@@ -496,7 +475,12 @@ to trigger an update for a given repository, <cite>GET</cite> <cite>/api/updateP
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Note that this API requires admin priviledge to call.</p>
+<p>Where userId is the id that is used for login, providerId is the type of the login,
+* if the user is configured to login with github, then providerId is &#8220;github&#8221;,
+* if the user is configured to login with ldap, then providerId should be &#8220;ldap&#8221;,
+* if the user is configured to login with normal username / password, then the providerId should be &#8220;userpass&#8221;</p>
+<p>Note that this API requires admin priviledge to call, and this API only works when github or gitlab integration is not configured
+for the system</p>
 </div>
 </div>
 </div>
