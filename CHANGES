@@ -1,4 +1,4 @@
-0.4.16
+0.4.17
 Use finagle redis client to replace jedis
 Visualization improvement
 Markdown Readme support
