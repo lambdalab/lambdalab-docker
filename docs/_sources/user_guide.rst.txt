@@ -5,7 +5,7 @@ This chapter is intended to go through the basics of how to use Insight.io. For 
 
 Config to use LDAP
 -------------------
-Insight.io can use LDAP for authentication with some simple configuration. You can configure these options in ``lambdalan-enterprise.conf`` and uncomment the ldap section, as shown below:
+Insight.io can use LDAP for authentication with some simple configuration. You can configure these options in ``user.conf`` and uncomment the ldap section, as shown below:
 
 .. image:: images/ldap_config.png
   :align: center
@@ -357,7 +357,7 @@ to disable auto update in **System** and **Project** levels.
 System Level Manual Update
 ++++++++++++++++++++++++++
 
-To enable repository manual update for the entire system, add the following configuration to ``lambdalan-enterprise.conf``.
+To enable repository manual update for the entire system, add the following configuration to ``user.conf``.
 
 ::
 
@@ -412,7 +412,7 @@ By default, the system try to sync permission from github / gitlab. If we need t
 
 Disable permission sync
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Add the following configuration to ``lambdalan-enterprise.conf``.
+Add the following configuration to ``user.conf``.
 
 ::
 

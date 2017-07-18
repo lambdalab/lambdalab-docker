@@ -187,11 +187,11 @@ Log into your github account and go to ``Settings`` then ``OAuth applications`` 
 
 Click on ``Register new application`` button and fill in ``Application name`` and ``Application description`` section with preferred text. Fill in ``Homepage URL`` and ``Authorization callback URL`` with public DNS of the server, e.g. ``http://ec2-52-35-135-191.us-west-2.compute.amazonaws.com``. Click ``Register Application`` to create a new OAuth application. Note ``Client ID`` and ``Client Secret`` Github provided with the newly created application.
 
-Go back to the bash terminal, open and edit the ``lambda-enterprise.conf`` file:
+Go back to the bash terminal, open and edit the ``user.conf`` file:
 
 .. code-block:: bash
 
-  vi ./lambdalab-docker/configs/lambdalab-enterprise.conf
+  vi ./lambdalab-docker/configs/user.conf
 
 And change ``ClientId`` and ``ClientSecret`` fields of both ``github-private`` and ``github`` sections to be the ``Client ID`` and ``Client Secret`` of your github application you just created:
 
@@ -224,11 +224,11 @@ Insight.io also support integration with ``Gitlab``. This section describes the 
 
 Similar to configuring github integration, the first step is to create a new OAuth application. Log into your gitlab account and go to ``settings`` page, then click on ``Application`` tag, and then enter a name for your application. The name can be any of your preferred strings. Fill the public IP/DNS of your host server into ``Redirect URI`` followed with "/authenticate/gitlab", e.g. ``http://ec2-52-35-135-191.us-west-2.compute.amazonaws.com/authenticate/gitlab``. Then add ``api`` scope and ``read_user`` scope. Finally, finish creating the OAuth application by clicking save application.
 
-Go back to the bash terminal, open and edit the ``lambda-enterprise.conf`` file:
+Go back to the bash terminal, open and edit the ``user.conf`` file:
 
 .. code-block:: bash
 
-  vi ./lambdalab-docker/configs/lambdalab-enterprise.conf
+  vi ./lambdalab-docker/configs/user.conf
 
 Add the authorization/accessToken url and the newly acquired OAUTH client ID and OAUTH client secret into the config:
 
@@ -260,11 +260,11 @@ To start with, you need to have a functional LDAP server and a Gitlab server. Th
 
 After integrating Gitlab with LDAP, we can now start to integrate Insight.io into the stack. Log into your Gitlab admin account and goto ``Profile Settings``, then click on the ``Account`` tag to get your ``Private Token``.
 
-Go back to the bash terminal, open and edit the ``lambda-enterprise.conf`` file:
+Go back to the bash terminal, open and edit the ``user.conf`` file:
 
 .. code-block:: bash
 
-  vi ./lambdalab-docker/configs/lambdalab-enterprise.conf
+  vi ./lambdalab-docker/configs/user.conf
 
 Configure the ``ldap`` section under ``securesocial`` like following:
 
@@ -352,15 +352,23 @@ The recommended way to seperate the services will be group them into 3 groups, n
 
 To start, make sure you have 3 machines ready with docker and docker-compose installed, and lambdalab-docker repository checked out.
 
-On all three machines, switch to ``distributed`` branch by
+On all three machines, use
 
-``git pull``
+::
 
-``git checkout distributed``
+./lambda-compose-dis
+
+or
+
+::
+
+./cn-lambda-compose-dis
+
+instead of './lambda-compose' or './lambda-compose-cn'
 
 and add the hostname of each machine by edit the following file:
 
-``vi configs/lambdalab-cluster.conf``
+``vi configs/user.conf``
 
 Change the following lines of config variable to the hostname of the machines like the following:
 
@@ -369,28 +377,34 @@ Change the following lines of config variable to the hostname of the machines li
     # frontend cluster host name, for single machine deployment set this to codatlas
     vars.cluster.frontend = "ec2-35-163-118-155.us-west-2.compute.amazonaws.com"
 
-    # builder cluster host name, for single machine deployment set this to jenkins
-    vars.cluster.builder = "ec2-35-164-137-4.us-west-2.compute.amazonaws.com"
-
     # db cluster host name, for single machine deployment set this to db
     vars.cluster.db = "ec2-35-166-120-102.us-west-2.compute.amazonaws.com"
 
+and uncomment following lines:
+
+.. code-block:: shell
+
+    # vars.mongodb.uri =  "mongodb://"${vars.cluster.db}
+    # vars.elasticsearch.host = ${vars.cluster.db}
+    # dataservice.host = ${vars.cluster.frontend}
+    # vars.metadataservice.host = ${vars.cluster.frontend}
+
 Specify the jenkins master address for their slaves at in ``docker-compose.yml``. Replace
-``- JENKINS_MASTER=http://jenkins:8080`` to your jenkins master's address.
+``- JENKINS_MASTER=http://jenkins:8080`` to your jenkins master's address (frontend address).
 
 Run the following command on each machine respectively:
 
 On Frondend machine:
 
-``./lambda-compose up -d liaceservice dataservice projectservice codatlas nginx redis pygments jenkins metadataservice``
+``./lambda-compose-dis up -d liaceservice dataservice projectservice codatlas nginx redis pygments jenkins metadataservice``
 
 On Db machine:
 
-``/lambda-compose up -d db elasticsearch``
+``/lambda-compose-dis up -d db elasticsearch``
 
 On Builder machine(s):
 
-``/lambda-compose up -d jenkins-slave``
+``/lambda-compose-dis up -d jenkins-slave``
 
 After everything is running, you should be able to access Insight.io by visiting frontend machine's hostname from your browser.
 

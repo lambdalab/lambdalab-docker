@@ -201,11 +201,11 @@
 <p>This chapter is intended to go through the basics of how to use Insight.io. For the rest of the chapter, <code class="docutils literal"><span class="pre">$HostName</span></code> refers to the public DNS address that has Insight.io installed. For example if you using AWS <code class="docutils literal"><span class="pre">$HostName</span></code> could be <code class="docutils literal"><span class="pre">http://ec2-52-35-135-191.us-west-2.compute.amazonaws.com</span></code></p>
 <div class="section" id="config-to-use-ldap">
 <h2>Config to use LDAP<a class="headerlink" href="#config-to-use-ldap" title="Permalink to this headline">¶</a></h2>
-<p>Insight.io can use LDAP for authentication with some simple configuration. You can configure these options in <code class="docutils literal"><span class="pre">lambdalan-enterprise.conf</span></code> and uncomment the ldap section, as shown below:</p>
+<p>Insight.io can use LDAP for authentication with some simple configuration. You can configure these options in <code class="docutils literal"><span class="pre">user.conf</span></code> and uncomment the ldap section, as shown below:</p>
 <img alt="_images/ldap_config.png" class="align-center" src="_images/ldap_config.png" />
 <p>Alternatively, you can also setup the LDAP config in <code class="docutils literal"><span class="pre">$HOSTNAME/projects/admin</span></code>, the config set in the webpage will be stored in the databse and overwrite the one in config file.</p>
 <p>Note that as long as <code class="docutils literal"><span class="pre">Provider</span> <span class="pre">URL</span></code> property is non-empty, LDAP log in will be enabled and normal username/password login will be disabled.</p>
-<p>If your company&#8217;s LDAP is using a self-signed CA, Insight.io will need to add the certificate into it&#8217;s JVM truststore to enable SSL authentication. To do this, simply put the certificate the following folder:</p>
+<p>If your company’s LDAP is using a self-signed CA, Insight.io will need to add the certificate into it’s JVM truststore to enable SSL authentication. To do this, simply put the certificate the following folder:</p>
 <p><code class="docutils literal"><span class="pre">lambdalab-docker/certs</span></code></p>
 <p>This folder will be mounted into Insight.io container and all the certificate within will be added into Insight.io trustore.</p>
 </div>
@@ -223,7 +223,7 @@
 <p>Click on <code class="docutils literal"><span class="pre">Authorize</span> <span class="pre">Github</span> <span class="pre">Public/Private</span> <span class="pre">Repo</span> <span class="pre">Access</span></code> buttons to grant Insight.io access to the public/private repos under your Github account respectively, after which all your repos should be listed under Repositories. Click on the <code class="docutils literal"><span class="pre">Import</span> <span class="pre">this</span> <span class="pre">repo</span></code> switch for the ones you want to import. This will kick-off the code analysis process.</p>
 <p>If you are not using Github integration, log in with the account with admin access, and go to:</p>
 <p><code class="docutils literal"><span class="pre">http://$HostName/admin/projects</span></code></p>
-<p>Put the git clone address (e.g. <a class="reference external" href="https://github.com/apache/hadoop.git">https://github.com/apache/hadoop.git</a>) into <code class="docutils literal"><span class="pre">Enter</span> <span class="pre">url</span> <span class="pre">here</span></code> text box and click on &#8220;Submit&#8221;. You will see the repo showing up in All projects list.</p>
+<p>Put the git clone address (e.g. <a class="reference external" href="https://github.com/apache/hadoop.git">https://github.com/apache/hadoop.git</a>) into <code class="docutils literal"><span class="pre">Enter</span> <span class="pre">url</span> <span class="pre">here</span></code> text box and click on “Submit”. You will see the repo showing up in All projects list.</p>
 </div>
 <div class="section" id="use-gitlab-plugin">
 <h2>Use Gitlab Plugin<a class="headerlink" href="#use-gitlab-plugin" title="Permalink to this headline">¶</a></h2>
@@ -261,7 +261,7 @@ Open <code class="docutils literal"><span class="pre">$GITLAB_DIR/public/assets/
 <div class="section" id="change-settings-xml-for-maven-project">
 <h2>Change settings.xml for Maven project<a class="headerlink" href="#change-settings-xml-for-maven-project" title="Permalink to this headline">¶</a></h2>
 <p>Sometimes you may be using your own Maven Central server to either speed up dependency download or host your own jars in your enterprise network, and usually this custom Maven Central server address is specified in settings.xml file.</p>
-<p>In order to make user-specified settings.xml visible to Codatlas&#8217;s docker container, you need to mount the file into the container. To do that, open docker-compose.yml (or cn-docker-compose.yml if you use cn-lambda-compose to start the stack) with a text editor, and add the following line under <code class="docutils literal"><span class="pre">services:tools:volumes</span></code> section:</p>
+<p>In order to make user-specified settings.xml visible to Codatlas’s docker container, you need to mount the file into the container. To do that, open docker-compose.yml (or cn-docker-compose.yml if you use cn-lambda-compose to start the stack) with a text editor, and add the following line under <code class="docutils literal"><span class="pre">services:tools:volumes</span></code> section:</p>
 <p><code class="docutils literal"><span class="pre">$PATH_TO_SETTINGS.xml:/lambda_home/tools/maven/conf/settings.xml</span></code></p>
 <p>where <code class="docutils literal"><span class="pre">$PATH_TO_SETTINGS.xml</span></code> is the absolute path to the settings.xml you want Codatlas to use.</p>
 <img alt="_images/setting_example.png" class="align-center" src="_images/setting_example.png" />
@@ -281,12 +281,12 @@ Open <code class="docutils literal"><span class="pre">$GITLAB_DIR/public/assets/
 <p><code class="docutils literal"><span class="pre">http://$HostName:8080</span></code></p>
 <p>Locate the build job on right hand side from <code class="docutils literal"><span class="pre">Build</span> <span class="pre">History</span></code> list, the name of the job will contain the name of the project. See below image for example.</p>
 <img alt="_images/job_detail.png" class="align-center" src="_images/job_detail.png" />
-<p>Click the latest number as shown in the graph. And then click &#8216;View as plain text&#8217; to get the log file.</p>
+<p>Click the latest number as shown in the graph. And then click ‘View as plain text’ to get the log file.</p>
 <img alt="_images/job_log.png" class="align-center" src="_images/job_log.png" />
 </div>
 <div class="section" id="use-api-access-token">
 <h2>Use Api Access Token<a class="headerlink" href="#use-api-access-token" title="Permalink to this headline">¶</a></h2>
-<p>Api access token acts like ordinary OAuth token, so that you don&#8217;t need to bear the password and username with you  all the time. You can understand it as a counterpart of <a class="reference external" href="https://github.com/settings/tokens">Personal Access Tokens</a> of Github. On Insight.io, api access token is not only enabled for username/password authentication, but also for all other supported third party OAuth services enabled. This documentation shows you have to leverage api access token to interact with Insight.io with more flexibility.</p>
+<p>Api access token acts like ordinary OAuth token, so that you don’t need to bear the password and username with you  all the time. You can understand it as a counterpart of <a class="reference external" href="https://github.com/settings/tokens">Personal Access Tokens</a> of Github. On Insight.io, api access token is not only enabled for username/password authentication, but also for all other supported third party OAuth services enabled. This documentation shows you have to leverage api access token to interact with Insight.io with more flexibility.</p>
 <p>An user could create as many api access token as he/she wants, but be extremely aware that whenever an token is created, it works forever until you delete/revoke it explicitly. So we highly recommend to always actively manage your api access token whenever necessary.</p>
 <div class="section" id="token-creation">
 <h3>Token Creation<a class="headerlink" href="#token-creation" title="Permalink to this headline">¶</a></h3>
@@ -393,7 +393,7 @@ the imported projects.</p>
 <ul class="simple">
 <li><strong>Enable Manual Update</strong>: By default, Insight.io periodically pull updates from remote for all the projects, with this</li>
 </ul>
-<p>setting enabled, your repository won&#8217;t be updated automatically. See details in the next section.</p>
+<p>setting enabled, your repository won’t be updated automatically. See details in the next section.</p>
 </div>
 <div class="section" id="via-api">
 <h4>Via API<a class="headerlink" href="#via-api" title="Permalink to this headline">¶</a></h4>
@@ -417,19 +417,19 @@ the imported projects.</p>
 <p><code class="docutils literal"><span class="pre">GET</span> <span class="pre">/api/admin/findProject?url=$repoUrl</span></code></p>
 <p>Note that <code class="docutils literal"><span class="pre">repoUrl</span></code> must be encoded as valid URL component.</p>
 <p>This API will return a project information if the project is existed. <code class="docutils literal"><span class="pre">response.id</span></code> is the <strong>Project ID</strong> we used for other API access.
-It will return 404 if the repo hasn&#8217;t been imported.</p>
+It will return 404 if the repo hasn’t been imported.</p>
 </div>
 <div class="section" id="configure-manual-update">
 <h2>Configure Manual Update<a class="headerlink" href="#configure-manual-update" title="Permalink to this headline">¶</a></h2>
 <p>By default, Insight.io periodically pull updates of all projects from remote. We provide 2 levels of configurations
 to disable auto update in <strong>System</strong> and <strong>Project</strong> levels.</p>
-<p>To enable repository manual update for the entire system, add the following configuration to <code class="docutils literal"><span class="pre">lambdalan-enterprise.conf</span></code>.</p>
+<p>To enable repository manual update for the entire system, add the following configuration to <code class="docutils literal"><span class="pre">user.conf</span></code>.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">projectservice</span><span class="o">.</span><span class="n">enableManualUpdate</span><span class="p">:</span> <span class="n">true</span>
 </pre></div>
 </div>
 <p>You need to restart the stack to apply this change. This configuration is honored with higer priority than project level
 manual update, i.e., when system level manual update is enabled, even disable the manual update
-for a single repository won&#8217;t work.</p>
+for a single repository won’t work.</p>
 <p>As mentioned earlier in this doc, you can opt in manual repository update when your first import the project.
 If you did not do that, you can also change the setting in the project configuration modal page.</p>
 <img alt="_images/manual_update_project.png" class="align-center" src="_images/manual_update_project.png" />
@@ -437,7 +437,7 @@ If you did not do that, you can also change the setting in the project configura
 for this particular repository.</p>
 <div class="section" id="trigger-manual-update">
 <h3>Trigger Manual Update<a class="headerlink" href="#trigger-manual-update" title="Permalink to this headline">¶</a></h3>
-<p>Let&#8217;s assume you have already, either enabled the manual update for the entire system, or for a specific repository. Then
+<p>Let’s assume you have already, either enabled the manual update for the entire system, or for a specific repository. Then
 to trigger an update for a given repository, <cite>GET</cite> <cite>/api/updateProject/&lt;projectId&gt;</cite> will trigger an update for <cite>projectId</cite> repository.</p>
 <p><code class="docutils literal"><span class="pre">GET</span> <span class="pre">/api/updateProject/&lt;projectId&gt;</span></code></p>
 <p>Be aware that you have to authenticate before you can successfully call this API, so an API access token is required in the
@@ -458,7 +458,7 @@ to trigger an update for a given repository, <cite>GET</cite> <cite>/api/updateP
 <p>By default, the system try to sync permission from github / gitlab. If we need to manually manage all the permission, we need to do the following</p>
 <div class="section" id="disable-permission-sync">
 <h3>Disable permission sync<a class="headerlink" href="#disable-permission-sync" title="Permalink to this headline">¶</a></h3>
-<p>Add the following configuration to <code class="docutils literal"><span class="pre">lambdalan-enterprise.conf</span></code>.</p>
+<p>Add the following configuration to <code class="docutils literal"><span class="pre">user.conf</span></code>.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">codatlas</span><span class="o">.</span><span class="n">enableManualAccessControl</span><span class="p">:</span> <span class="n">true</span>
 </pre></div>
 </div>
@@ -476,9 +476,9 @@ to trigger an update for a given repository, <cite>GET</cite> <cite>/api/updateP
 </pre></div>
 </div>
 <p>Where userId is the id that is used for login, providerId is the type of the login,
-* if the user is configured to login with github, then providerId is &#8220;github&#8221;,
-* if the user is configured to login with ldap, then providerId should be &#8220;ldap&#8221;,
-* if the user is configured to login with normal username / password, then the providerId should be &#8220;userpass&#8221;</p>
+* if the user is configured to login with github, then providerId is “github”,
+* if the user is configured to login with ldap, then providerId should be “ldap”,
+* if the user is configured to login with normal username / password, then the providerId should be “userpass”</p>
 <p>Note that this API requires admin priviledge to call, and this API only works when github or gitlab integration is not configured
 for the system</p>
 </div>
