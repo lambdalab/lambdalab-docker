@@ -23,14 +23,16 @@ services:
     command:
       - --bind 0.0.0.0
   elasticsearch:
-    image: '${REGISTRY}lambdalab/elasticsearch:${VERSION}'
+    image: '${REGISTRY}library/elasticsearch:5.5'
     volumes:
-      - ./data/elasticsearch:/lambda_home/data/elasticsearch
-      - ./configs:/lambda_home/configs
-      - ./logs/elasticsearch:/lambda_home/data/logs
+      - ./data/elasticsearch:/usr/share/elasticsearch/data
+      - ./logs/elasticsearch:/usr/share/elasticsearch/logs
+      - ./thirdparty/elasticsearch/config:/usr/share/elasticsearch/config
     ports:
       - 9200:9200
       - 9300:9300
+    command:
+      - -Ecluster.name=ElasticsearchEnterprise
   dataservice:
     image: '${REGISTRY}lambdalab/dataservice:${VERSION}'
     volumes:
