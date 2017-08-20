@@ -1,3 +1,13 @@
+0.6.3
+Improve go analyzer performance
+Improve PHP analyzer performance (some feature is still missing)
+Internal repo data location changes
+
+0.6.0
+Initial Go support
+Internal component upgrades (you need to upgrade to 0.4.25+ first in order to upgrade to 0.6.0)
+Bug fixes
+
 0.4.26
 Rest API refactoring
 Internal component upgrades
