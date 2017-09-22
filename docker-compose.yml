@@ -1,7 +1,7 @@
 version: '2'
 services:
   db:
-    image: '${REGISTRY}library/mongo:3.4'
+    image: '${LIBRARY_REGISTRY}library/mongo:3.4'
     entrypoint:
       - mongod
       - --dbpath
@@ -19,13 +19,13 @@ services:
       - 27017:27017 # TODO hide this port in the future
       - 28017:28017
   redis: # TODO mount redis disk volume
-    image: '${REGISTRY}library/redis:3.2'
+    image: '${LIBRARY_REGISTRY}library/redis:3.2'
     command:
       - --bind 0.0.0.0
     ports:
       - 6379:6379
   elasticsearch:
-    image: '${REGISTRY}library/elasticsearch:5.5'
+    image: '${LIBRARY_REGISTRY}library/elasticsearch:5.5'
     volumes:
       - ./data/elasticsearch:/usr/share/elasticsearch/data
       - ./logs/elasticsearch:/usr/share/elasticsearch/logs
@@ -94,7 +94,7 @@ services:
     ports:
       - 9000:9000
   nginx:
-    image: '${REGISTRY}library/nginx:1.10'
+    image: '${LIBRARY_REGISTRY}library/nginx:1.10'
     depends_on:
       - codatlas
     ports:

@@ -1,3 +1,9 @@
+0.6.5
+Initial Bazel support
+Improved Go support
+Improved Syntax highlighting
+Improved Search Filtering
+
 0.6.4
 GitHub Enterprise Integration
 CR Fishfood

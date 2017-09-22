@@ -10,6 +10,7 @@ export SCRIPT_DIR=$(abs_path $(dirname $0))
 cd $SCRIPT_DIR
 
 export REGISTRY=${REGISTRY:=''}
+export LIBRARY_REGISTRY=${LIBRARY_REGISTRY:=''}
 
 if [ $(uname) = 'Darwin' ]; then
   echo "You are using mac os which is not officially supported for product use"

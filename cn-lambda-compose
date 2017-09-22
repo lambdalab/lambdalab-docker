@@ -8,5 +8,6 @@ abs_path () {
 export SCRIPT_DIR=$(abs_path $(dirname $0))
 
 export REGISTRY=registry.lambdalab.io/
+export LIBRARY_REGISTRY=registry.docker-cn.com/
 
 $SCRIPT_DIR/lambda-compose $@
