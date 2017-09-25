@@ -24,6 +24,7 @@ services:
       - --bind 0.0.0.0
     ports:
       - 6379:6379
+    restart: on-failure
   elasticsearch:
     image: '${LIBRARY_REGISTRY}library/elasticsearch:5.5'
     volumes:
@@ -35,6 +36,7 @@ services:
       - 9300:9300
     command:
       - -Ecluster.name=ElasticsearchEnterprise
+    restart: on-failure
   dataservice:
     image: '${REGISTRY}lambdalab/dataservice:${VERSION}'
     depends_on:
@@ -50,6 +52,7 @@ services:
     ports:
       - 10020:10020
       - 9418:9418
+    restart: on-failure
   projectservice:
     image: '${REGISTRY}lambdalab/projectservice:${VERSION}'
     depends_on:
@@ -58,6 +61,7 @@ services:
       - ./data/projects:/lambda_home/data/projects
       - ./logs:/lambda_home/logs
       - ./configs:/lambda_home/configs
+    restart: on-failure
   liaceservice:
     image: '${REGISTRY}lambdalab/liaceservice:${VERSION}'
     depends_on:
@@ -66,6 +70,7 @@ services:
     volumes:
       - ./configs:/lambda_home/configs
       - ./logs:/lambda_home/logs
+    restart: on-failure
   metadataservice:
     image: '${REGISTRY}lambdalab/metadataservice:${VERSION}'
     depends_on:
@@ -75,6 +80,7 @@ services:
       - ./logs:/lambda_home/logs
     ports:
       - 10060:10060
+    restart: on-failure
   pygments:
     image: '${REGISTRY}lambdalab/pygments:${VERSION}'
     depends_on:
@@ -82,6 +88,7 @@ services:
     volumes:
       - ./configs:/lambda_home/configs
       - ./logs:/lambda_home/logs
+    restart: on-failure
   codatlas:
     image: '${REGISTRY}lambdalab/codatlas:${VERSION}'
     depends_on:
@@ -93,6 +100,7 @@ services:
       - ./certs:/lambda_home/certs
     ports:
       - 9000:9000
+    restart: on-failure
   nginx:
     image: '${LIBRARY_REGISTRY}library/nginx:1.10'
     depends_on:
@@ -105,6 +113,7 @@ services:
       - ./docs:/lambda_home/docs
       - ./plugins:/lambda_home/plugins
       - ./certs:/lambda_home/certs
+    restart: on-failure
   jenkins:
     image: '${REGISTRY}lambdalab/jenkins:${VERSION}'
     volumes:
@@ -112,6 +121,7 @@ services:
     ports:
       - 8080:8080
       - 50000:50000
+    restart: on-failure
   jenkins-slave:
     build:
       context: ./tools/${REGISTRY}
@@ -125,3 +135,4 @@ services:
     depends_on:
       - jenkins
       - metadataservice
+    restart: on-failure
