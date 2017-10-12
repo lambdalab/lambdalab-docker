@@ -1,3 +1,6 @@
+0.7.0
+Upgrade build environment to ubuntu 16
+
 0.6.5
 Initial Bazel support
 Improved Go support
