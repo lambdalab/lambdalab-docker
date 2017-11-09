@@ -1,3 +1,8 @@
+0.7.1
+Experimental new CPP support
+Python analyzer memory optimization
+More secured user register/login workflow with password
+
 0.7.0
 Upgrade build environment to ubuntu 16
 
