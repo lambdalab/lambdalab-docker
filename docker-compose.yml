@@ -90,7 +90,7 @@ services:
       - ./configs:/lambda_home/configs
       - ./logs:/lambda_home/logs
     restart: on-failure
-  codatlas:
+  webserver:
     image: '${REGISTRY}lambdalab/codatlas:${VERSION}'
     depends_on:
       - db
@@ -102,10 +102,12 @@ services:
     ports:
       - 9000:9000
     restart: on-failure
+  codatlas: # this container has been renamed to webserver, we keep this just in order for easier upgrade
+    image: busybox
   nginx:
     image: '${LIBRARY_REGISTRY}library/nginx:1.10'
     depends_on:
-      - codatlas
+      - webserver
     ports:
       - 80:80
       - 443:443 # only useful if you are using https
