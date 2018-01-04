@@ -40,6 +40,7 @@ services:
     restart: on-failure
   dataservice:
     image: '${REGISTRY}lambdalab/dataservice:${VERSION}'
+    command: ["bash", "-c", "cp /root/.gitconfig_ref /root/.gitconfig && /lambda_home/dataservice/start"]
     depends_on:
       - db
     volumes:
@@ -47,6 +48,8 @@ services:
       - ./logs:/lambda_home/logs
       - ./configs:/lambda_home/configs
       - ~/.ssh:/root/.ssh
+      - ~/.git-credentials:/root/.git-credentials
+      - ~/.gitconfig:/root/.gitconfig_ref
       - /etc/krb5.conf:/etc/krb5.conf
       - ./jaas.conf:/etc/jaas.conf
       - /tmp/krb5cc_0:/tmp/krb5cc_0
