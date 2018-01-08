@@ -23,6 +23,7 @@ fi
 
 # todo 
 touch ~/.git-credentials
+touch ~/.gitconfig
 
 # docker-compose build --pull jenkins-slave
 docker-compose $@
