@@ -21,6 +21,9 @@ else
   fi
 fi
 
+# todo 
+touch ~/.git-credentials
+
 # docker-compose build --pull jenkins-slave
 docker-compose $@
 

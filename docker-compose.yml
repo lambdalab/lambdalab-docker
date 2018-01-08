@@ -98,6 +98,7 @@ services:
     depends_on:
       - db
       - redis
+      - rabbitmq
     volumes:
       - ./configs:/lambda_home/configs
       - ./logs:/lambda_home/logs
@@ -143,3 +144,12 @@ services:
       - metadataservice
     restart: on-failure
     mem_limit: 4g
+  rabbitmq:
+    image: 'rabbitmq:3.6-management'
+    ports:
+      - 5672:5672
+      - 4369:4369
+      - 15672:15672
+    volumes:
+      - ./data/rabbitmq:/var/lib/rabbitmq
+    restart: on-failure
