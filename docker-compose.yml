@@ -1,4 +1,4 @@
-version: '2'
+version: '2.3'
 services:
   db:
     image: '${LIBRARY_REGISTRY}library/mongo:3.4'
@@ -12,20 +12,25 @@ services:
       - --rest
       - --setParameter
       - failIndexKeyTooLong=false
+    healthcheck:
+      test: ["CMD-SHELL", "echo 'db.stats().ok' | mongo  --quiet"]
+      interval: 30s
+      start_period: 30s
+      retries: 5
     volumes:
       - ./data/mongodb/db:/data/db
       - ./logs/mongodb:/logs
     ports:
       - 27017:27017 # TODO hide this port in the future
       - 28017:28017
-    restart: on-failure
+    restart: always
   redis: # TODO mount redis disk volume
     image: '${LIBRARY_REGISTRY}library/redis:3.2'
     command:
       - --bind 0.0.0.0
     ports:
       - 6379:6379
-    restart: on-failure
+    restart: always
   elasticsearch:
     image: '${LIBRARY_REGISTRY}library/elasticsearch:5.5'
     volumes:
@@ -37,7 +42,7 @@ services:
       - 9300:9300
     command:
       - -Ecluster.name=ElasticsearchEnterprise
-    restart: on-failure
+    restart: always
   dataservice:
     image: '${REGISTRY}lambdalab/dataservice:${VERSION}'
     command: ["bash", "-c", "cp /root/.gitconfig_ref /root/.gitconfig && /lambda_home/dataservice/start"]
@@ -56,7 +61,7 @@ services:
     ports:
       - 10020:10020
       - 9418:9418
-    restart: on-failure
+    restart: always
   projectservice:
     image: '${REGISTRY}lambdalab/projectservice:${VERSION}'
     depends_on:
@@ -65,7 +70,7 @@ services:
       - ./data/projects:/lambda_home/data/projects
       - ./logs:/lambda_home/logs
       - ./configs:/lambda_home/configs
-    restart: on-failure
+    restart: always
   liaceservice:
     image: '${REGISTRY}lambdalab/liaceservice:${VERSION}'
     depends_on:
@@ -74,7 +79,7 @@ services:
     volumes:
       - ./configs:/lambda_home/configs
       - ./logs:/lambda_home/logs
-    restart: on-failure
+    restart: always
   metadataservice:
     image: '${REGISTRY}lambdalab/metadataservice:${VERSION}'
     depends_on:
@@ -84,7 +89,7 @@ services:
       - ./logs:/lambda_home/logs
     ports:
       - 10060:10060
-    restart: on-failure
+    restart: always
   pygments:
     image: '${REGISTRY}lambdalab/pygments:${VERSION}'
     depends_on:
@@ -92,7 +97,7 @@ services:
     volumes:
       - ./configs:/lambda_home/configs
       - ./logs:/lambda_home/logs
-    restart: on-failure
+    restart: always
   webserver:
     image: '${REGISTRY}lambdalab/codatlas:${VERSION}'
     depends_on:
@@ -105,7 +110,7 @@ services:
       - ./certs:/lambda_home/certs
     ports:
       - 9000:9000
-    restart: on-failure
+    restart: always
   codatlas: # this container has been renamed to webserver, we keep this just in order for easier upgrade
     image: busybox
   nginx:
@@ -120,7 +125,7 @@ services:
       - ./docs:/lambda_home/docs
       - ./plugins:/lambda_home/plugins
       - ./certs:/lambda_home/certs
-    restart: on-failure
+    restart: always
   jenkins:
     image: '${REGISTRY}lambdalab/jenkins:${VERSION}'
     volumes:
@@ -128,7 +133,7 @@ services:
     ports:
       - 8080:8080
       - 50000:50000
-    restart: on-failure
+    restart: always
   jenkins-slave:
     build:
       context: ./tools/${REGISTRY}
@@ -142,7 +147,7 @@ services:
     depends_on:
       - jenkins
       - metadataservice
-    restart: on-failure
+    restart: always
     mem_limit: 4g
   rabbitmq:
     image: 'rabbitmq:3.6-management'
@@ -152,4 +157,4 @@ services:
       - 15672:15672
     volumes:
       - ./data/rabbitmq:/var/lib/rabbitmq
-    restart: on-failure
+    restart: always
