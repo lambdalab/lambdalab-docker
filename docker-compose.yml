@@ -32,7 +32,7 @@ services:
       - 6379:6379
     restart: always
   elasticsearch:
-    image: '${LIBRARY_REGISTRY}library/elasticsearch:5.5'
+    image: '${LIBRARY_REGISTRY}lambdalab/elasticsearch-xpack:5.5.2'
     volumes:
       - ./data/elasticsearch:/usr/share/elasticsearch/data
       - ./logs/elasticsearch:/usr/share/elasticsearch/logs
@@ -40,8 +40,8 @@ services:
     ports:
       - 9200:9200
       - 9300:9300
-    command:
-      - -Ecluster.name=ElasticsearchEnterprise
+    environment:
+      CLUSTER_NAME: "ElasticsearchEnterprise"
     restart: always
   dataservice:
     image: '${REGISTRY}lambdalab/dataservice:${VERSION}'
