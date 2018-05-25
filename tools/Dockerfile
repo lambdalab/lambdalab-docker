@@ -1,1 +1,1 @@
-FROM lambdalab/tools:0.8.4
+FROM lambdalab/tools:0.8.5
