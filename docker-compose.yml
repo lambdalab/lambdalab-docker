@@ -34,8 +34,8 @@ services:
   elasticsearch:
     image: '${LIBRARY_REGISTRY}lambdalab/elasticsearch-xpack:5.5.2'
     volumes:
-      - ./data/elasticsearch:/usr/share/elasticsearch/data
-      - ./logs/elasticsearch:/usr/share/elasticsearch/logs
+      - ./data/elasticsearch:/data
+      - ./logs/elasticsearch:/logs
       - ./thirdparty/elasticsearch/config:/usr/share/elasticsearch/config
     ports:
       - 9200:9200
