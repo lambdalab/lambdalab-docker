@@ -1,1 +1,1 @@
-FROM registry.lambdalab.io/lambdalab/tools:0.8.6
+FROM registry.lambdalab.io/lambdalab/tools:0.8.11
