@@ -80,16 +80,6 @@ services:
       - ./configs:/lambda_home/configs
       - ./logs:/lambda_home/logs
     restart: always
-  metadataservice:
-    image: '${REGISTRY}lambdalab/metadataservice:${VERSION}'
-    depends_on:
-      - db
-    volumes:
-      - ./configs:/lambda_home/configs
-      - ./logs:/lambda_home/logs
-    ports:
-      - 10060:10060
-    restart: always
   pygments:
     image: '${REGISTRY}lambdalab/pygments:${VERSION}'
     depends_on:
